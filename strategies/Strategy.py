@@ -2,10 +2,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 # %matplotlib inline
+from .Z import Z
 
-class Strategy:
+class Strategy(Z):
     names=[]
-    datecol='Date'
+    datecol = 'Date'
     
     def rsisig(df,startdate,enddate,upperlimit,lowerlimit,window):
         raise NotImplementedError("Function not implemented here")
@@ -17,7 +18,7 @@ class Strategy:
         raise NotImplementedError("Function not implemented here")
         
     def profit2(df,dfcol):
-        df['sigvol']=np.where((df['signal']!='None'),10,0)
+        df['sigvol']=np.where((df['signal']!='None'),Z.stocks,0)
         df['bought']=np.where(df['signal']=='buy' , df['sigvol']*df[dfcol] , 0)
         df['sold']=np.where(df['signal']=='sell' , df['sigvol']*df[dfcol] , 0)
         net=df['sold'].sum()-df['bought'].sum()

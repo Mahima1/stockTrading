@@ -22,3 +22,22 @@ class Vol(Strategy,MA):
         temp['signal']=np.where(temp['%vol']>=30, np.where(temp['Close_dr']>0,'buy','sell'), 'None')
 #         return Strategy.profit2(temp)
         return temp
+
+    def voloptimize(df,startdate,enddate,days,arr):
+        maxprofit=window=0
+        count1=arr[0][1]-arr[0][0]+1
+        #we could have passed single list too like arr=[5,100]
+        w=arr[0][0]
+        for p in range(count1):
+            t=Vol.volsig(df,startdate,enddate,w,days)
+            net=Strategy.profit2(t,'Open')
+    #         maxprofit=net if net>maxprofit else maxprofit
+
+            if maxprofit<net:
+                maxprofit=net
+                window=w
+            w+=1
+        return [maxprofit,window,'Vol']
+
+# arr=[[5,80]]
+# voloptimize(df,'2017-07-14 05:30:00','2019-05-26 05:30:00',1,arr)

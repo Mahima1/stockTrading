@@ -12,7 +12,7 @@ class MA:
     def __init__(self,dfcol,window,days):
         super(Strategy, self).__init__()
         self.dfcol=dfcol
-        self.winow=window
+        self.window=window
         self.days=days
 
     def moving_average2(df,startdate,enddate,dfcol,window,days,):
