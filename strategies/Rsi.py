@@ -35,7 +35,7 @@ class Rsi(Strategy):
         mask1=t['rsi']>=upperlimit
         t['signal'] = np.where(mask,'buy',(np.where(mask1,'sell','None')))
     #     print (t[['Date','rsi']][t['signal']=='sell'])
-    #     return Strategy.profit2(t)
+    #     return Strategy.profit(t)
     #     print("Profit is: ",net)
         return t
 
@@ -52,7 +52,7 @@ class Rsi(Strategy):
                 w=arr[2][0]
                 for r in range(count3):
                     t=Rsi.rsisig(df, startdate, enddate, up,low,dfcol,w)
-                    net=Strategy.profit2(t,'Open')
+                    net=Strategy.profit(t,'Open')
     #                 maxprofit=net if net>maxprofit else maxprofit
                     if maxprofit<net:
                         maxprofit=net

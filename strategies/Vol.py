@@ -19,7 +19,7 @@ class Vol(Strategy,MA):
         temp['%vol']=(abs(temp['Volume']-temp['roll'])/temp['roll'])*100
         temp['Close_dr']=((temp['Close'].shift(1)-temp['Close'])/temp['Close'])*100
         temp['signal']=np.where(temp['%vol']>=30, np.where(temp['Close_dr']>0,'buy','sell'), 'None')
-#         return Strategy.profit2(temp)
+#         return Strategy.profit(temp)
         return temp
 
     def voloptimize(df,startdate,enddate,days,arr):
@@ -29,7 +29,7 @@ class Vol(Strategy,MA):
         w=arr[0][0]
         for p in range(count1):
             t=Vol.volsig(df,startdate,enddate,w,days)
-            net=Strategy.profit2(t,'Close')
+            net=Strategy.profit(t,'Close')
     #         maxprofit=net if net>maxprofit else maxprofit
 
             if maxprofit<net:

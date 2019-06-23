@@ -2,7 +2,7 @@
 # from .Supreme import Supreme
 #
 # class Portfolio(Strategy,Supreme):
-# def profit2(df,dfcol):
+# def profit(df,dfcol):
 #         df['sigvol'] =  np.where((df['signal']!='None'), (Supreme.money/df[dfcol]) , 0)
 #         df['bought']=np.where(df['signal']=='buy' , df['sigvol']*df[dfcol] , 0)
 #         df['sold']=np.where(df['signal']=='sell' , df['sigvol']*df[dfcol] , 0)

@@ -25,7 +25,7 @@ def join(arr):
         result=joined.dropna()
         temp=result.copy()
         temp.rename(columns={'signal'+first_key:'signal'}, inplace=True)
-        net=Strategy.profit2(temp,'Open')
+        net=Strategy.profit(temp,'Open')
         print ("Net profit is: {} ".format(net))
         return result
 
@@ -38,7 +38,7 @@ def join(arr):
             result=joined.dropna()
             temp=result.copy()
             temp.rename(columns={'signal'+first_key:'signal'}, inplace=True)
-        net=Strategy.profit2(temp,'Open')
+        net=Strategy.profit(temp,'Open')
         print ("Net profit is: {} ".format(net))
         return temp
 #     '_rsi':Rsi.rsisig(df, '2017-07-14 05:30:00','2019-05-26 05:30:00' ,70,20,'Open', 14),

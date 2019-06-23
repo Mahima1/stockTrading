@@ -33,7 +33,7 @@ class Boll(Strategy,MA):
         mask1=t['High']>=t['upper band']
         mask=t['Low']<=t['lower band']
         t['signal'] = np.where(mask,'buy',(np.where(mask1,'sell','None')))
-        # return Strategy.profit2(t)
+        # return Strategy.profit(t)
         return t
 
 
@@ -50,7 +50,7 @@ class Boll(Strategy,MA):
             f=arr[1][0]
             for e in range(count2):
                 t=Boll.bolsig(df,startdate,enddate,w,days,f)
-                net=Strategy.profit2(t,'Open')
+                net=Strategy.profit(t,'Open')
     #             maxprofit=net if net>maxprofit else maxprofit
                 if maxprofit<net:
                     maxprofit=net
