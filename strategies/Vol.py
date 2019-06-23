@@ -15,7 +15,7 @@ class Vol(Strategy,MA):
         super(MA, self).__init__()
 
     def volsig(df,startdate,enddate,window,days):
-        temp=MA.moving_average2(df,startdate,enddate,'Volume',window,days)
+        temp=MA.moving_average(df,startdate,enddate,'Volume',window,days)
         temp['%vol']=(abs(temp['Volume']-temp['roll'])/temp['roll'])*100
         temp['Close_dr']=((temp['Close'].shift(1)-temp['Close'])/temp['Close'])*100
         temp['signal']=np.where(temp['%vol']>=30, np.where(temp['Close_dr']>0,'buy','sell'), 'None')

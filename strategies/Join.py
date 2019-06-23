@@ -4,7 +4,7 @@ from .Rsi import Rsi
 from .Strategy import Strategy
 from .MACD import MACD
 
-def s(arr):
+def join(arr):
 
     from .Boll import Boll
     from .Vol import Vol
@@ -48,4 +48,4 @@ def s(arr):
 #      'Rsi':Rsi.rsisig(df, '2017-07-14 05:30:00','2019-05-26 05:30:00' ,70,20,'Open', 14)}
 #
 #
-# s(arr)
+# join(arr)

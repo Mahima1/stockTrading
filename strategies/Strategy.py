@@ -4,7 +4,7 @@ import numpy as np
 # %matplotlib inline
 # from .Z import Z
 
-class Strategy():
+class Strategy(Supreme):
     names=[]
     datecol = 'Date'
     

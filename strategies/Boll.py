@@ -19,7 +19,7 @@ class Boll(Strategy,MA):
         # Boll.saved_args=locals()
         temp=df
         temp['typical price']=(temp['Close']+temp['High']+temp['Low'])/3
-        temp=MA.moving_average2(temp,startdate,enddate,'typical price',window,days)
+        temp=MA.moving_average(temp,startdate,enddate,'typical price',window,days)
         temp['std']=temp.rolling(window, min_periods = 1)['typical price'].std()
         temp['upper band']=temp['roll']+(factor*temp['std'])
         temp['lower band']=temp['roll']-(factor*temp['std'])

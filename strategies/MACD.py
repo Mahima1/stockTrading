@@ -17,8 +17,8 @@ class MACD(Strategy,MA):
         self.window2=window2
 
     def macd(df,startdate,enddate,dfcol,window1,window2,days):
-        t1=MA.moving_average2(df,startdate,enddate,dfcol,window1,days)
-        t2=MA.moving_average2(df,startdate,enddate,dfcol,window2,days)
+        t1=MA.moving_average(df,startdate,enddate,dfcol,window1,days)
+        t2=MA.moving_average(df,startdate,enddate,dfcol,window2,days)
         # plt.plot(t1['Date'],t1['roll'])
         # plt.plot(t2['Date'],t2['roll'])
         return t1,t2

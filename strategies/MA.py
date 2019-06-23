@@ -15,7 +15,7 @@ class MA:
         self.window=window
         self.days=days
 
-    def moving_average2(df,startdate,enddate,dfcol,window,days,):
+    def moving_average(df,startdate,enddate,dfcol,window,days,minperiod=14):
             import datetime
             temp=Strategy.slicebydate2(df,startdate,enddate)
             temp2=pd.DataFrame()
@@ -24,6 +24,6 @@ class MA:
             # enddate,periods=days,freq='m'
             temp2['Date']=pd.date_range(start=pd.to_datetime(1,origin=enddate,unit='D'),end=pd.to_datetime(days,origin=enddate,unit='D'))
             temp=temp.append(temp2,ignore_index=True)
-            temp['roll']=temp.rolling(window, min_periods = 1)[dfcol].mean()
+            temp['roll']=temp.rolling(window, min_periods = minperiod)[dfcol].mean()
             return temp
         #     plt.plot(temp['Date'],temp['roll'])

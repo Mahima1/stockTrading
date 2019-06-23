@@ -17,7 +17,7 @@ class Klines(Strategy,MA):
         super(MA, self).__init__()
 
     def doji(df,startdate,enddate,dfcol,window ,days):
-        q1=MA.moving_average2(df,startdate,enddate,dfcol,window ,days)
+        q1=MA.moving_average(df,startdate,enddate,dfcol,window ,days)
         q3=q1
         q1['shiftedroll']=q1['roll'].shift(5)
         q3['slope']=(q1['roll']-q1['shiftedroll'])/5
@@ -30,7 +30,7 @@ class Klines(Strategy,MA):
 #         Strategy.candlesticks(q3,startdate,enddate)
 
     def umbrella(df,startdate,enddate,dfcol,window ,days):
-        q1=MA.moving_average2(df,startdate,enddate,dfcol,window ,days)
+        q1=MA.moving_average(df,startdate,enddate,dfcol,window ,days)
         q3=q1.copy()
         q1['shiftedroll']=q1['roll'].shift(5)
         q3['slope']=(q1['roll']-q1['shiftedroll'])/5
