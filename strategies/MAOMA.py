@@ -17,9 +17,9 @@ class MAOMA(Strategy,MA):
         self.window1=window1
         self.window2=window2
 
-    def maoma(df,startdate,enddate,dfcol,window1,window2,days,):
-        t1=MA.moving_average(df,startdate,enddate,dfcol,window1,days,)
-        t2=MA.moving_average(t1,startdate,enddate,'roll',window2,days,)
+    def maoma(df,startdate,enddate,dfcol,window1,window2):
+        t1=MA.moving_average(df,startdate,enddate,dfcol,window1)
+        t2=MA.moving_average(t1,startdate,enddate,'roll',window2)
         return t1,t2
 
     def plotit(t1,t2):

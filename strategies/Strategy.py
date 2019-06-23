@@ -11,10 +11,10 @@ class Strategy(Supreme):
     def rsisig(df,startdate,enddate,upperlimit,lowerlimit,window):
         raise NotImplementedError("Function not implemented here")
     
-    def bolsig(df,window,days,startdate,enddate):
+    def bolsig(df,window,startdate,enddate):
         raise NotImplementedError("Function not implemented here")
         
-    def volsig(df,window,days,startdate,enddate):
+    def volsig(df,window,startdate,enddate):
         raise NotImplementedError("Function not implemented here")
         
     def profit(df,dfcol):
@@ -24,7 +24,7 @@ class Strategy(Supreme):
         net=df['sold'].sum()-df['bought'].sum()
         return net
     
-    def slicebydate2(df,startdate, enddate):
+    def slicebydate(df,startdate, enddate):
         temp=df[df[Strategy.datecol]>=startdate][df[Strategy.datecol]<=enddate]
         return temp
     
@@ -34,7 +34,7 @@ class Strategy(Supreme):
         import matplotlib.ticker as ticker
         import datetime as datetime
 
-        quotes=Strategy.slicebydate2(df,startdate,enddate)
+        quotes=Strategy.slicebydate(df,startdate,enddate)
         fig, ax = plt.subplots()
     #     candle.candlestick2_ohlc(ax,quotes['Open'],quotes['High'],quotes['Low'],quotes['Close'],width=0.6,colorup='#53AA03',colordown="#C20074")
         candle.candlestick2_ohlc(ax,quotes['Open'],quotes['High'],quotes['Low'],quotes['Close'],width=0.6,colorup='#10069D',colordown="#34E5DA") # color up is blue and down is cyan

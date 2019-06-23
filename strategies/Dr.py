@@ -13,6 +13,6 @@ class Dr(Strategy):
         self.dfcol=dfcol
 
     def daily_return(df,dfcol):
-        # z=Strategy.slicebydate2(df,startdate,enddate)
+        # z=Strategy.slicebydate(df,startdate,enddate)
         df[dfcol+'_dr']=((df[dfcol].shift(1)-df[dfcol])/df[dfcol])*100
         return df

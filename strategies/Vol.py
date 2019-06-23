@@ -14,21 +14,21 @@ class Vol(Strategy,MA):
         super(Strategy, self).__init__()
         super(MA, self).__init__()
 
-    def volsig(df,startdate,enddate,window,days):
-        temp=MA.moving_average(df,startdate,enddate,'Volume',window,days)
+    def volsig(df,startdate,enddate,window):
+        temp=MA.moving_average(df,startdate,enddate,'Volume',window)
         temp['%vol']=(abs(temp['Volume']-temp['roll'])/temp['roll'])*100
         temp['Close_dr']=((temp['Close'].shift(1)-temp['Close'])/temp['Close'])*100
         temp['signal']=np.where(temp['%vol']>=30, np.where(temp['Close_dr']>0,'buy','sell'), 'None')
 #         return Strategy.profit(temp)
         return temp
 
-    def voloptimize(df,startdate,enddate,days,arr):
+    def voloptimize(df,startdate,enddate,arr):
         maxprofit=window=0
         count1=arr[0][1]-arr[0][0]+1
         #we could have passed single list too like arr=[5,100]
         w=arr[0][0]
         for p in range(count1):
-            t=Vol.volsig(df,startdate,enddate,w,days)
+            t=Vol.volsig(df,startdate,enddate,w)
             net=Strategy.profit(t,'Close')
             if maxprofit<net:
                 maxprofit=net

@@ -16,7 +16,7 @@ class Rsi(Strategy):
         self.window=window
 
     def rsi(df,startdate,enddate,dfcol,window):
-        temp=Strategy.slicebydate2(df,startdate,enddate)
+        temp=Strategy.slicebydate(df,startdate,enddate)
         temp2=temp[dfcol].diff()
         profit, loss = temp2.copy(), temp2.copy()
         profit[profit < 0] = 0

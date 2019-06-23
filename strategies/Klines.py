@@ -16,8 +16,8 @@ class Klines(Strategy,MA):
         super(Strategy, self).__init__()
         super(MA, self).__init__()
 
-    def doji(df,startdate,enddate,dfcol,window ,days):
-        q1=MA.moving_average(df,startdate,enddate,dfcol,window ,days)
+    def doji(df,startdate,enddate,dfcol,window ):
+        q1=MA.moving_average(df,startdate,enddate,dfcol,window )
         q3=q1.copy()
         q1['shiftedroll']=q1['roll'].shift(5)
         q3['slope']=(q1['roll']-q1['shiftedroll'])/5
@@ -28,8 +28,8 @@ class Klines(Strategy,MA):
         return q3
     #     print(q3)# if -ve denotes downward trend
 
-    def umbrella(df,startdate,enddate,dfcol,window ,days):
-        q1=MA.moving_average(df,startdate,enddate,dfcol,window ,days)
+    def umbrella(df,startdate,enddate,dfcol,window ):
+        q1=MA.moving_average(df,startdate,enddate,dfcol,window )
         q3=q1.copy()
         q1['shiftedroll']=q1['roll'].shift(5)
         q3['slope']=(q1['roll']-q1['shiftedroll'])/5
@@ -38,8 +38,8 @@ class Klines(Strategy,MA):
         q3=q3[(abs((q1['Close']-q1['Low'])/(q1['High']-q1['Open'])))>=2]
         return q3
 
-    def maribozu(df,startdate,enddate,dfcol,window ,days):
-        temp=Strategy.slicebydate2(df,startdate,enddate,dfcol,window ,days)
+    def maribozu(df,startdate,enddate,dfcol,window ):
+        temp=Strategy.slicebydate(df,startdate,enddate,dfcol,window )
         temp2=temp[abs((temp['Open']-temp['Close'])/(temp['High']-temp['Low']))>=0.95]
         return temp2
 

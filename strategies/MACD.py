@@ -16,9 +16,9 @@ class MACD(Strategy,MA):
         self.window1=window1
         self.window2=window2
 
-    def macd(df,startdate,enddate,dfcol,window1,window2,days):
-        t1=MA.moving_average(df,startdate,enddate,dfcol,window1,days)
-        t2=MA.moving_average(df,startdate,enddate,dfcol,window2,days)
+    def macd(df,startdate,enddate,dfcol,window1,window2):
+        t1=MA.moving_average(df,startdate,enddate,dfcol,window1)
+        t2=MA.moving_average(df,startdate,enddate,dfcol,window2)
         return t1,t2
 
     def plotit(t1,t2):
@@ -26,8 +26,8 @@ class MACD(Strategy,MA):
         plt.plot(t2['Date'],t2['roll'])
 
 
-    def macdsig(df,startdate,enddate,dfcol,window1,window2,days):
-        q1,q2=MACD.macd(df,startdate,enddate,dfcol,window1,window2,days)
+    def macdsig(df,startdate,enddate,dfcol,window1,window2):
+        q1,q2=MACD.macd(df,startdate,enddate,dfcol,window1,window2)
         q1['diff']=q1['roll']-q2['roll']
         q1['shift']=(q1['diff'].shift(1))
         q1['multiple']=q1['diff']*q1['shift']
@@ -37,7 +37,7 @@ class MACD(Strategy,MA):
         q1['signal'] = np.where(mask,where1,'None')
         return q1
 
-    def macdoptimize(df,startdate,enddate,dfcol,days,arr):
+    def macdoptimize(df,startdate,enddate,dfcol,arr):
         maxprofit=windowshort=windowlong=0
         count1=arr[0][1]-arr[0][0]+1
         count2=arr[1][1]-arr[1][0]+1
@@ -45,7 +45,7 @@ class MACD(Strategy,MA):
         for p in range(count1):
             w2=arr[1][0]
             for e in range(count2):
-                t=MACD.macdsig(df,startdate,enddate,dfcol,w1,w2,days)
+                t=MACD.macdsig(df,startdate,enddate,dfcol,w1,w2)
                 net=Strategy.profit(t,'Open')
         #             maxprofit=net if net>maxprofit else maxprofit
                 if maxprofit<net:
