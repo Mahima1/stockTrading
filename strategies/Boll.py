@@ -53,15 +53,15 @@ class Boll(Strategy,MA):
             f=arr[1][0]
             for e in range(count2):
                 t=Boll.bolsig(df,startdate,enddate,w,f)
-                net=Strategy.profit(t,'Open')
+                net=Strategy.profit(t,'Close')
                 if maxprofit<net:
+                    # print("maxprofit is: ",maxprofit)
                     maxprofit=net
                     factor=f
                     window=w
                 f+=1
             w +=1
         return [maxprofit,window,factor,'Boll']
-
 # arr=[[10,80],[2,4]]
 # boloptimize(df,'2017-07-14 05:30:00','2019-05-26 05:30:00',1,arr)
 

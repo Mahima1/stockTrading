@@ -18,9 +18,9 @@ def optimizer(llist):
     count=len(llist)
     profit=0
     at_index=0
-    var=list(list())
+    var=list()
     for i in range(count):
-        var.append(llist[i])         # var is list of lists
+        var.append(llist[i])         # var is list of lists returned by various optimize functions
         if profit<var[i][0]:
             profit=var[i][0]
             at_index=i

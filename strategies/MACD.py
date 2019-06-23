@@ -46,8 +46,7 @@ class MACD(Strategy,MA):
             w2=arr[1][0]
             for e in range(count2):
                 t=MACD.macdsig(df,startdate,enddate,dfcol,w1,w2)
-                net=Strategy.profit(t,'Open')
-        #             maxprofit=net if net>maxprofit else maxprofit
+                net=Strategy.profit(t,'Close')
                 if maxprofit<net:
                     maxprofit=net
                     windowshort=w1

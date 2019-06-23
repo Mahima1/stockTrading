@@ -39,7 +39,6 @@ class Portfolio(Supreme):
                     Supreme.money=Supreme.stocks*t[dfcol].iloc[i]
                     Supreme.stocks=0
                     print("Money and stocks are:  {}  ,{}   on date {} ".format(Supreme.money,Supreme.stocks,t['Date'].iloc[i]))
-
 #
 # Portfolio.pfmanage(arr)
 
