@@ -26,4 +26,6 @@ class MA:
             temp=temp.append(temp2,ignore_index=True)
             temp['roll']=temp.rolling(window, min_periods = minperiod)[dfcol].mean()
             return temp
-        #     plt.plot(temp['Date'],temp['roll'])
+
+    def plotit(temp):
+        plt.plot(temp['Date'],temp['roll'])

@@ -27,7 +27,9 @@ class Rsi(Strategy):
         x=(x/(1+x))
         temp['rsi']=(x*100)
         return temp
-#         temp.plot(x='Date',y='rsi')
+
+    def plotit(temp):
+        temp.plot(x='Date',y='rsi')
 
     def rsisig(df, startdate, enddate, upperlimit, lowerlimit,dfcol,window):
         t=Rsi.rsi(df,startdate,enddate,dfcol,window)

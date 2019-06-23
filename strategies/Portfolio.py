@@ -1,18 +1,9 @@
-# from .Strategy import Strategy
-# from .Supreme import Supreme
-#
-# class Portfolio(Strategy,Supreme):
-# def profit(df,dfcol):
-#         df['sigvol'] =  np.where((df['signal']!='None'), (Supreme.money/df[dfcol]) , 0)
-#         df['bought']=np.where(df['signal']=='buy' , df['sigvol']*df[dfcol] , 0)
-#         df['sold']=np.where(df['signal']=='sell' , df['sigvol']*df[dfcol] , 0)
-#         net=df['sold'].sum()-df['bought'].sum()
-#         return net
+import numpy as np
+import pandas as pd
+from .Supreme import Supreme
 
-    # def pfmanage(df):
-    #     df['signal']=='buy'
+
 class Portfolio(Supreme):
-    import numpy as np
     def pfmanage(df,dfcol): #managing pf using first buy and sell signal
         t2=df.copy()
         t2['sigbinary']=np.where(t2['signal']=='buy',1,-1)
@@ -49,8 +40,8 @@ class Portfolio(Supreme):
                     Supreme.stocks=0
                     print("Money and stocks are:  {}  ,{}   on date {} ".format(Supreme.money,Supreme.stocks,t['Date'].iloc[i]))
 
-arr={'Boll':Boll.bolsig(df,'2017-07-14 05:30:00','2019-05-26 05:30:00',14,1 ),
-     'Rsi':Rsi.rsisig(df, '2017-07-14 05:30:00','2019-05-26 05:30:00' ,70,20,'Close', 14)}
-
-Portfolio.pfmanage(arr)
+# arr={'Boll':Boll.bolsig(df,'2017-07-14 05:30:00','2019-05-26 05:30:00',14,1 ),
+#      'Rsi':Rsi.rsisig(df, '2017-07-14 05:30:00','2019-05-26 05:30:00' ,70,20,'Close', 14)}
+#
+# Portfolio.pfmanage(arr)
 

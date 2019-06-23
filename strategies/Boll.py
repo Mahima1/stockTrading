@@ -24,9 +24,12 @@ class Boll(Strategy,MA):
         temp['upper band']=temp['roll']+(factor*temp['std'])
         temp['lower band']=temp['roll']-(factor*temp['std'])
         return temp
-#         plt.plot(temp['Date'],temp['typical price'])
-#         plt.plot(temp['Date'],temp['upper band'])
-#         plt.plot(temp['Date'],temp['lower band'])
+
+    def plotit(temp):
+        plt.plot(temp['Date'],temp['typical price'])
+        plt.plot(temp['Date'],temp['upper band'])
+        plt.plot(temp['Date'],temp['lower band'])
+
 
     def bolsig(df,startdate,enddate,window,days,factor=2):
         t=Boll.bollinger_bands(df,startdate,enddate,window,days,factor)

@@ -30,8 +30,6 @@ class Vol(Strategy,MA):
         for p in range(count1):
             t=Vol.volsig(df,startdate,enddate,w,days)
             net=Strategy.profit(t,'Close')
-    #         maxprofit=net if net>maxprofit else maxprofit
-
             if maxprofit<net:
                 maxprofit=net
                 window=w
