@@ -40,8 +40,6 @@ class Portfolio(Supreme):
                     Supreme.stocks=0
                     print("Money and stocks are:  {}  ,{}   on date {} ".format(Supreme.money,Supreme.stocks,t['Date'].iloc[i]))
 
-# arr={'Boll':Boll.bolsig(df,'2017-07-14 05:30:00','2019-05-26 05:30:00',14,1 ),
-#      'Rsi':Rsi.rsisig(df, '2017-07-14 05:30:00','2019-05-26 05:30:00' ,70,20,'Close', 14)}
 #
 # Portfolio.pfmanage(arr)
 

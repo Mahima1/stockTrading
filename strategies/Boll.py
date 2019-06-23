@@ -17,10 +17,10 @@ class Boll(Strategy,MA):
 
     def bollinger_bands(df,startdate,enddate,window,factor=2):
         # Boll.saved_args=locals()
-        temp=df
+        temp=df.copy()
         temp['typical price']=(temp['Close']+temp['High']+temp['Low'])/3
         temp=MA.moving_average(temp,startdate,enddate,'typical price',window)
-        temp['std']=temp.rolling(window, min_periods = 1)['typical price'].std()
+        temp['std']=temp.rolling(window, min_periods = window)['typical price'].std()
         temp['upper band']=temp['roll']+(factor*temp['std'])
         temp['lower band']=temp['roll']-(factor*temp['std'])
         return temp
@@ -54,7 +54,6 @@ class Boll(Strategy,MA):
             for e in range(count2):
                 t=Boll.bolsig(df,startdate,enddate,w,f)
                 net=Strategy.profit(t,'Open')
-    #             maxprofit=net if net>maxprofit else maxprofit
                 if maxprofit<net:
                     maxprofit=net
                     factor=f

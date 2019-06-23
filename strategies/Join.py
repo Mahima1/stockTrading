@@ -3,6 +3,30 @@ from .Vol import Vol
 from .Rsi import Rsi
 from .Strategy import Strategy
 from .MACD import MACD
+from .Portfolio import Portfolio
+
+
+
+# arr1=[[70,71],[20,21],[10,15]]
+# arr2=[[10,12],[2,4]]
+# llist=[
+#        Rsi.rsioptimize(df,'2017-07-14 05:30:00','2019-05-26 05:30:00','Close',arr1),
+#        Boll.boloptimize(df,'2017-07-14 05:30:00','2019-05-26 05:30:00',1,arr2)
+#       ]
+
+def optimizer(llist):
+    count=len(llist)
+    profit=0
+    at_index=0
+    var=list(list())
+    for i in range(count):
+        var.append(llist[i])         # var is list of lists
+        if profit<var[i][0]:
+            profit=var[i][0]
+            at_index=i
+    return var[at_index]
+
+# optimizer(llist)
 
 def join(arr):
 
@@ -25,9 +49,10 @@ def join(arr):
         result=joined.dropna()
         temp=result.copy()
         temp.rename(columns={'signal'+first_key:'signal'}, inplace=True)
-        net=Strategy.profit(temp,'Open')
-        print ("Net profit is: {} ".format(net))
-        return result
+        Portfolio.pfmanage(temp,'Close')
+        # net=Strategy.profit(temp,'Close')
+        # print ("Net profit is: {} ".format(net))
+        # return result
 
     else:
         for i in range(1,count):
@@ -38,14 +63,13 @@ def join(arr):
             result=joined.dropna()
             temp=result.copy()
             temp.rename(columns={'signal'+first_key:'signal'}, inplace=True)
-        net=Strategy.profit(temp,'Open')
-        print ("Net profit is: {} ".format(net))
-        return temp
-#     '_rsi':Rsi.rsisig(df, '2017-07-14 05:30:00','2019-05-26 05:30:00' ,70,20,'Open', 14),
-#           '_vol':Vol.volsig(df,'2017-07-14 05:30:00','2019-05-26 05:30:00',14,1),
+            Portfolio.pfmanage(temp,'Close')
+        # net=Strategy.profit(temp,'Close')
+        # print ("Net profit is: {} ".format(net))
+        # return temp
+
+
 
 # arr={'Boll':Boll.bolsig(df,'2017-07-14 05:30:00','2019-05-26 05:30:00',14,1 ),
 #      'Rsi':Rsi.rsisig(df, '2017-07-14 05:30:00','2019-05-26 05:30:00' ,70,20,'Open', 14)}
-#
-#
 # join(arr)

@@ -21,8 +21,8 @@ class Rsi(Strategy):
         profit, loss = temp2.copy(), temp2.copy()
         profit[profit < 0] = 0
         loss[loss > 0] = 0
-        profitroll=profit.rolling(window, min_periods = 1).mean()
-        lossroll=loss.rolling(window, min_periods = 1).mean().abs()
+        profitroll=profit.rolling(window, min_periods = window).mean()
+        lossroll=loss.rolling(window, min_periods = window).mean().abs()
         x=profitroll/lossroll
         x=(x/(1+x))
         temp['rsi']=(x*100)
@@ -55,7 +55,6 @@ class Rsi(Strategy):
                 for r in range(count3):
                     t=Rsi.rsisig(df, startdate, enddate, up,low,dfcol,w)
                     net=Strategy.profit(t,'Open')
-    #                 maxprofit=net if net>maxprofit else maxprofit
                     if maxprofit<net:
                         maxprofit=net
                         upperlimit=up
