@@ -1,11 +1,10 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 # %matplotlib inline
-import numpy as np
 
+import numpy as np
 from .Strategy import Strategy
 from .MA import MA
-from .Dr import Dr
 
 
 class Vol(Strategy,MA):
@@ -30,14 +29,16 @@ class Vol(Strategy,MA):
         w=arr[0][0]
         for p in range(count1):
             t=Vol.volsig(df,startdate,enddate,w,days)
-            net=Strategy.profit2(t,'Open')
+            net=Strategy.profit2(t,'Close')
     #         maxprofit=net if net>maxprofit else maxprofit
 
             if maxprofit<net:
                 maxprofit=net
                 window=w
             w+=1
-        return [maxprofit,window,'Vol']
+        return [maxprofit,window,'Vol'] #,rrr[['Date','sigvol','Close','signal']]
+
+
 
 # arr=[[5,80]]
 # voloptimize(df,'2017-07-14 05:30:00','2019-05-26 05:30:00',1,arr)

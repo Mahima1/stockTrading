@@ -2,9 +2,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 # %matplotlib inline
-from .Z import Z
+# from .Z import Z
 
-class Strategy(Z):
+class Strategy():
     names=[]
     datecol = 'Date'
     
@@ -18,7 +18,7 @@ class Strategy(Z):
         raise NotImplementedError("Function not implemented here")
         
     def profit2(df,dfcol):
-        df['sigvol']=np.where((df['signal']!='None'),Z.stocks,0)
+        df['sigvol'] =  np.where((df['signal']!='None'), (10) , 0)          #Z.money/df[dfcol]
         df['bought']=np.where(df['signal']=='buy' , df['sigvol']*df[dfcol] , 0)
         df['sold']=np.where(df['signal']=='sell' , df['sigvol']*df[dfcol] , 0)
         net=df['sold'].sum()-df['bought'].sum()
