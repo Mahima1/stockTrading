@@ -4,10 +4,11 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 from .Strategy import Strategy
+from .Portfolio import Portfolio
 from .MA import MA
 
 
-class Vol(Strategy,MA):
+class Vol(Strategy,MA,Portfolio):
     Strategy.names.append('Vol')
 
     def __init__(self):
@@ -29,7 +30,7 @@ class Vol(Strategy,MA):
         w=arr[0][0]
         for p in range(count1):
             t=Vol.volsig(df,startdate,enddate,w)
-            net=Strategy.profit(t,'Close')
+            net=Portfolio.pfmanage(t,'Close')
             if maxprofit<net:
                 maxprofit=net
                 window=w

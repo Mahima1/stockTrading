@@ -4,6 +4,8 @@ import numpy as np
 # %matplotlib inline
 
 from .Strategy import Strategy
+from .Portfolio import Portfolio
+
 from .MA import MA
 
 
@@ -46,7 +48,8 @@ class MACD(Strategy,MA):
             w2=arr[1][0]
             for e in range(count2):
                 t=MACD.macdsig(df,startdate,enddate,dfcol,w1,w2)
-                net=Strategy.profit(t,'Close')
+                # net=Strategy.profit(t,'Close')
+                net=Portfolio.pfmanage(t,'Close')
                 if maxprofit<net:
                     maxprofit=net
                     windowshort=w1
@@ -57,6 +60,6 @@ class MACD(Strategy,MA):
 
 
 # arr=[[5,30],[60,80]]
-# macdoptimize(df,'2017-07-14 05:30:00','2019-05-26 05:30:00','Close',1,arr)
+# macdoptimize(df,'2017-07-14 05:30:00','2019-05-26 05:30:00','Close',arr)
 
 # macd(spy,'2007-08-08','2008-12-12','Adj Close',15,100,10)

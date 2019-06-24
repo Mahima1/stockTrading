@@ -3,10 +3,11 @@ import matplotlib.pyplot as plt
 # %matplotlib inline
 
 import numpy as np
-
+from .Supreme import Supreme
+from .Portfolio import Portfolio
 from .Strategy import Strategy
 
-class Rsi(Strategy):
+class Rsi(Strategy,Supreme,Portfolio):
     Strategy.names.append('Rsi')
 
     def __init__(self,dfcol,window):
@@ -54,7 +55,10 @@ class Rsi(Strategy):
                 w=arr[2][0]
                 for r in range(count3):
                     t=Rsi.rsisig(df, startdate, enddate, up,low,dfcol,w)
-                    net=Strategy.profit(t,'Close')
+                    # net=Strategy.profit(t,'Close')
+                    # if maxprofit<net:
+                    #     maxprofit=net
+                    net=Portfolio.pfmanage(t,'Close')
                     if maxprofit<net:
                         maxprofit=net
                         upperlimit=up

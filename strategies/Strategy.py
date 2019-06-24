@@ -2,12 +2,10 @@
 
 import pandas as pd
 import matplotlib.pyplot as plt
-from .Supreme import Supreme
 import numpy as np
 # %matplotlib inline
-# from .Z import Z
 
-class Strategy(Supreme):
+class Strategy():
     names=[]
     datecol = 'Date'
     
@@ -35,7 +33,6 @@ class Strategy(Supreme):
         import mpl_finance as candle
         import matplotlib.pyplot as plt
         import matplotlib.ticker as ticker
-        import datetime as datetime
 
         quotes=Strategy.slicebydate(df,startdate,enddate)
         fig, ax = plt.subplots()

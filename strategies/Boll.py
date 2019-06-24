@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 # %matplotlib inline
 
+from .Portfolio import Portfolio
 from .Strategy import Strategy
 from .MA import MA
 
@@ -53,7 +54,8 @@ class Boll(Strategy,MA):
             f=arr[1][0]
             for e in range(count2):
                 t=Boll.bolsig(df,startdate,enddate,w,f)
-                net=Strategy.profit(t,'Close')
+                # net=Strategy.profit(t,'Close')
+                net=Portfolio.pfmanage(t,'Close')
                 if maxprofit<net:
                     # print("maxprofit is: ",maxprofit)
                     maxprofit=net

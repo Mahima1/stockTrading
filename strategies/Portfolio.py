@@ -34,8 +34,8 @@ class Portfolio(Supreme):
                 if t['exec'].iloc[i]=='sell':
                     Portfolio.updatepf(Supreme.stocks*t[dfcol].iloc[i],0,'sell')
                     Portfolio.printpf(t,i)
-        return t
-# Portfolio.pfmanage(arr)
+        return Supreme.value()
+
     def updatepf(moneyvalue,stocksvalue,sig):
         if sig=='sell':
             Supreme.money=moneyvalue
