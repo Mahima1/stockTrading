@@ -7,7 +7,7 @@ from .Supreme import Supreme
 from .Portfolio import Portfolio
 from .Strategy import Strategy
 
-class Rsi(Strategy,Supreme,Portfolio):
+class Rsi(Strategy,Supreme):
     Strategy.names.append('Rsi')
 
     def __init__(self,dfcol,window):

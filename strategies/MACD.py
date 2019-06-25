@@ -37,6 +37,7 @@ class MACD(Strategy,MA):
         mask1=q1['shift']>0
         where1=np.where(mask1,'buy','sell')
         q1['signal'] = np.where(mask,where1,'None')
+        q1=q1.drop(columns=['diff','shift','multiple'])
         return q1
 
     def macdoptimize(df,startdate,enddate,dfcol,arr):
@@ -48,15 +49,15 @@ class MACD(Strategy,MA):
             w2=arr[1][0]
             for e in range(count2):
                 t=MACD.macdsig(df,startdate,enddate,dfcol,w1,w2)
-                # net=Strategy.profit(t,'Close')
-                net=Portfolio.pfmanage(t,'Close')
+                net=Strategy.profit(t,'Close')
+                tee=Portfolio.pfmanage(t,'Close')
                 if maxprofit<net:
                     maxprofit=net
                     windowshort=w1
                     windowlong=w2
                 w2+=1
             w1 +=1
-        return [maxprofit,windowshort,windowlong,'MACD']
+        return tee,[maxprofit,windowshort,windowlong,'MACD']
 
 
 # arr=[[5,30],[60,80]]

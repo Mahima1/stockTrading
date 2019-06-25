@@ -56,8 +56,9 @@ class Boll(Strategy,MA):
                 t=Boll.bolsig(df,startdate,enddate,w,f)
                 # net=Strategy.profit(t,'Close')
                 net=Portfolio.pfmanage(t,'Close')
+                print ("net is : ",net)
                 if maxprofit<net:
-                    # print("maxprofit is: ",maxprofit)
+                    # print("maxprofit is: {} and net is :{} ".format(maxprofit,net))
                     maxprofit=net
                     factor=f
                     window=w

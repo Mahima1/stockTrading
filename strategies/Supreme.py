@@ -3,11 +3,14 @@ class Supreme:
     money=10 #  =>Bitcoins are 10
     def value():
         if Supreme.money==0:
-            value=Supreme.stocks
+            val=Supreme.stocks
         elif Supreme.stocks==0:
-            value=Supreme.money
+            val=Supreme.money
         else:
-            value=1
-        return value
+            val=1
+        return val
+    def reset():
+        Supreme.stocks=0
+        Supreme.money=10
 
 
