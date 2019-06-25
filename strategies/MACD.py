@@ -49,15 +49,15 @@ class MACD(Strategy,MA):
             w2=arr[1][0]
             for e in range(count2):
                 t=MACD.macdsig(df,startdate,enddate,dfcol,w1,w2)
-                net=Strategy.profit(t,'Close')
-                tee=Portfolio.pfmanage(t,'Close')
+                # net=Strategy.profit(t,'Close')
+                net=Portfolio.pfmanage(t,'Close')
                 if maxprofit<net:
                     maxprofit=net
                     windowshort=w1
                     windowlong=w2
                 w2+=1
             w1 +=1
-        return tee,[maxprofit,windowshort,windowlong,'MACD']
+        return [maxprofit,windowshort,windowlong,'MACD']
 
 
 # arr=[[5,30],[60,80]]

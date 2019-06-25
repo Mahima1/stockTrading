@@ -3,11 +3,10 @@ import matplotlib.pyplot as plt
 # %matplotlib inline
 
 import numpy as np
-from .Supreme import Supreme
 from .Portfolio import Portfolio
 from .Strategy import Strategy
 
-class Rsi(Strategy,Supreme):
+class Rsi(Strategy):
     Strategy.names.append('Rsi')
 
     def __init__(self,dfcol,window):
