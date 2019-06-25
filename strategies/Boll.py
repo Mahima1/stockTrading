@@ -38,7 +38,11 @@ class Boll(Strategy,MA):
         mask=t['Low']<=t['lower band']
         t['signal'] = np.where(mask,'buy',(np.where(mask1,'sell','None')))
         # return Strategy.profit(t)
-        return t
+        # return t
+        if t.shape[0]==0:
+            return 0
+        else:
+            return t
 
 
     def boloptimize(df,startdate,enddate,arr):
@@ -54,9 +58,9 @@ class Boll(Strategy,MA):
             f=arr[1][0]
             for e in range(count2):
                 t=Boll.bolsig(df,startdate,enddate,w,f)
-                # net=Strategy.profit(t,'Close')
                 net=Portfolio.pfmanage(t,'Close')
-                print ("net is : ",net)
+                # net=Strategy.profit(t,'Close')
+                # print ("net is : ",net)
                 if maxprofit<net:
                     # print("maxprofit is: {} and net is :{} ".format(maxprofit,net))
                     maxprofit=net

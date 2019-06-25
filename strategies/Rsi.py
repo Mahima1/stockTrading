@@ -39,7 +39,11 @@ class Rsi(Strategy):
     #     print (t[['Date','rsi']][t['signal']=='sell'])
     #     return Strategy.profit(t)
     #     print("Profit is: ",net)
-        return t
+    #     return t
+        if t.shape[0]==0:
+            return 0
+        else:
+            return t
 
 
     def rsioptimize(df,startdate,enddate,dfcol,arr):

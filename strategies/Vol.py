@@ -21,7 +21,11 @@ class Vol(Strategy,MA,Portfolio):
         temp['Close_dr']=((temp['Close'].shift(1)-temp['Close'])/temp['Close'])*100
         temp['signal']=np.where(temp['%vol']>=30, np.where(temp['Close_dr']>0,'buy','sell'), 'None')
 #         return Strategy.profit(temp)
-        return temp
+#         return temp
+        if temp.shape[0]==0:
+            return 0
+        else:
+            return temp
 
     def voloptimize(df,startdate,enddate,arr):
         maxprofit=window=0

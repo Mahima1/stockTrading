@@ -25,7 +25,7 @@ def optimizer(llist):
             profit=var[i][0]
             at_index=i
     return var[at_index]
-
+    # return var
 # optimizer(llist)
 
 def join(arr):
@@ -35,7 +35,6 @@ def join(arr):
     list_of_keys=list(arr)
     first_key=list_of_keys[0]
     count=len(list_of_keys)
-
     joined=arr[first_key]
     joined=joined[joined['signal']!='None']
     if (count==1):

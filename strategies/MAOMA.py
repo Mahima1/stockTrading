@@ -37,7 +37,11 @@ class MAOMA(Strategy,MA):
         mask1=q1['shift']>0
         where1=np.where(mask1,'buy','sell')
         q1['signal'] = np.where(mask,where1,'None')
-        return q1
+        # return q1
+        if q1.shape[0]==0:
+            return 0
+        else:
+            return q1
 
     def maomaoptimize(df,startdate,enddate,dfcol,arr):
         maxprofit=windowshort=windowlong=0
