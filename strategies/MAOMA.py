@@ -1,9 +1,6 @@
 #-----------------MAOMA reperesents MOVING AVERAGE OF MOVING AVERAGE---------------------------
 
-import pandas as pd
 import matplotlib.pyplot as plt
-# %matplotlib inline
-
 from .Strategy import Strategy
 from .MA import MA
 from .Portfolio import Portfolio

@@ -1,8 +1,6 @@
-import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 # %matplotlib inline
-
 from .Portfolio import Portfolio
 from .Strategy import Strategy
 from .MA import MA

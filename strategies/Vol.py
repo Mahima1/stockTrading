@@ -1,6 +1,3 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-# %matplotlib inline
 
 import numpy as np
 from .Strategy import Strategy
@@ -40,8 +37,6 @@ class Vol(Strategy,MA,Portfolio):
                 window=w
             w+=1
         return [maxprofit,window,'Vol'] #,rrr[['Date','sigvol','Close','signal']]
-
-
 
 # arr=[[5,80]]
 # voloptimize(df,'2017-07-14 05:30:00','2019-05-26 05:30:00',1,arr)

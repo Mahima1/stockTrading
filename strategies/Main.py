@@ -10,7 +10,8 @@ class Main:
         else:
             val="stocks or money not zero hence cannot calculate value"
         return val
-    def reset():
+    @classmethod
+    def reset(cls):
         Main.stocks=0
         Main.money=10
 
