@@ -5,6 +5,8 @@ from .Main import Main
 class Portfolio(Main):
     def pfmanage(df,dfcol): # managing pf using first buy and sell signal
         Main.reset()
+        if df==0:
+            return 0
         t2=df.copy()
         t2=t2[t2['signal']!='None']
         t2['sigbinary']=np.where(t2['signal']=='buy',1,-1)

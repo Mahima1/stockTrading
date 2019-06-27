@@ -24,18 +24,6 @@ class MA:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 # -----------moving average function which was predicting next dates and applying rolling mean there too----------
 # def moving_average(df,startdate,enddate,dfcol,window,days,minperiod=14):
     #         import datetime
