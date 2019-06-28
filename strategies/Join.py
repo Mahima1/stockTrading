@@ -7,12 +7,15 @@ def optimizer(llist):
     at_index=0
     var=list()
     for i in range(count):
-        var.append(llist[i])         # var is list of lists returned by various optimize functions
+        p=llist[i]
+        p.append(i)
+        var.append(p)
+        # var.append(llist[i])         # var is list of lists returned by various optimize functions
         if profit<var[i][0]:
             profit=var[i][0]
             at_index=i
-    # return var[at_index]
-    return var
+    return var[at_index]
+    # return var
 # optimizer(llist)
 
 def join(arr):
