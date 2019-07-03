@@ -1,8 +1,3 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-# %matplotlib inline
-
-import pandas as pd
 from .Strategy import Strategy
 
 

@@ -1,11 +1,7 @@
 #     startdate=pd.to_datetime(14,origin=startdate,unit='D')
 
-import pandas as pd
-import matplotlib.pyplot as plt
 import numpy as np
 
-
-# %matplotlib inline
 
 class Strategy():
     names = []
