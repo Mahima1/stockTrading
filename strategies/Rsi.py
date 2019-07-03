@@ -60,8 +60,3 @@ class Rsi(Strategy):
                 low += 1
             up += 1
         return [maxprofit, upperlimit, lowerlimit, window, 'Rsi']
-
-# arr=[[70,80],[20,30],[10,30]]
-# rsioptimize(df,'2017-07-14 05:30:00','2019-05-26 05:30:00','Close',arr)
-
-# Rsi.rsi(apple,'2008-01-01','2008-10-10','Adj Close',30)

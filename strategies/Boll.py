@@ -9,7 +9,6 @@ class Boll(Strategy, MA):
     Strategy.names.append('Bollinger_bands')
 
     # saved_args=0
-
     def __init__(self):
         super(Strategy, self).__init__()
         super(MA, self).__init__()
@@ -59,6 +58,3 @@ class Boll(Strategy, MA):
                 f += 1
             w += 1
         return [maxprofit, window, factor, 'Boll']
-
-# arr=[[10,80],[2,4]]
-# boloptimize(df,'2017-07-14 05:30:00','2019-05-26 05:30:00',1,arr)

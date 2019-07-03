@@ -54,11 +54,3 @@ class MAOMA(Strategy, MA):
                 w2 += 1
             w1 += 1
         return [maxprofit, windowshort, windowlong, 'MAOMA']
-
-# arr=[[5,30],[60,80]]
-# maomaoptimize(df,'2017-07-14 05:30:00','2019-05-26 05:30:00','Close',arr)
-
-# maoma(spy,'2007-08-08','2008-12-12','Adj Close',15,100,10)
-
-
-# MAOMA.maoma(spy,'2007-08-08','2008-12-12','Adj Close',15,15,1)

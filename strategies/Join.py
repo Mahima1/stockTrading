@@ -17,6 +17,7 @@ def optimizer(llist):
     # return var[at_index]
     return var
 
+
 def join(arr):
     import pandas as pd
 
@@ -47,23 +48,3 @@ def join(arr):
         result.rename(columns={'signal' + first_key: 'signal'}, inplace=True)
         t = Portfolio.pfmanage(result, 'Close')
         return t
-
-# from .Boll import Boll
-# from .Vol import Vol
-# from .Rsi import Rsi
-# from .Strategy import Strategy
-# from .MACD import MACD
-
-# arr1=[[70,71],[20,21],[10,15]]
-# arr2=[[10,12],[2,4]]
-# llist=[
-#        Rsi.rsioptimize(df,'2017-07-14 05:30:00','2019-05-26 05:30:00','Close',arr1),
-#        Boll.boloptimize(df,'2017-07-14 05:30:00','2019-05-26 05:30:00',1,arr2)
-#       ]
-
-# arr={'_boll':Boll.bolsig(df,'2017-07-14 05:30:00','2019-05-26 05:30:00',14),
-#      '_rsi':Rsi.rsisig(df, '2017-07-14 05:30:00','2019-05-26 05:30:00' ,70,20,'Close', 14),
-#      '_vol':Vol.volsig(df, '2017-07-14 05:30:00','2019-05-26 05:30:00' ,14),
-#      '_macd':MACD.macdsig(df,'2017-07-14 05:30:00','2019-05-26 05:30:00','Close',14,30)
-#     }
-# join(arr)
