@@ -36,11 +36,11 @@ class Boll(Strategy,MA):
         mask=t['Low']<=t['lower band']
         t['signal'] = np.where(mask,'buy',(np.where(mask1,'sell','None')))
         # return Strategy.profit(t)
-        # return t
-        if t.shape[0]==0:
-            return 0
-        else:
-            return t
+        return t
+        # if t.shape[0]==0:
+        #     return 0
+        # else:
+        #     return t
 
 
     def boloptimize(df,startdate,enddate,arr):
