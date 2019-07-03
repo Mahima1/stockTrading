@@ -34,12 +34,7 @@ class Boll(Strategy, MA):
         mask1 = t['High'] >= t['upper band']
         mask = t['Low'] <= t['lower band']
         t['signal'] = np.where(mask, 'buy', (np.where(mask1, 'sell', 'None')))
-        # return Strategy.profit(t)
         return t
-        # if t.shape[0]==0:
-        #     return 0
-        # else:
-        #     return t
 
     def boloptimize(df, startdate, enddate, arr):
         #         arr is list of lists of the form [[startrange,endrange], [startrange,endrange]] where lists inside are in order
@@ -58,12 +53,12 @@ class Boll(Strategy, MA):
                 # net=Strategy.profit(t,'Close')
                 # print ("net is : ",net)
                 if maxprofit < net:
-                    # print("maxprofit is: {} and net is :{} ".format(maxprofit,net))
                     maxprofit = net
                     factor = f
                     window = w
                 f += 1
             w += 1
         return [maxprofit, window, factor, 'Boll']
+
 # arr=[[10,80],[2,4]]
 # boloptimize(df,'2017-07-14 05:30:00','2019-05-26 05:30:00',1,arr)

@@ -19,11 +19,6 @@ class Vol(Strategy, MA, Portfolio):
         #         return Strategy.profit(temp)
         return temp
 
-    #         if temp.shape[0]==0:
-    #             return 0
-    #         else:
-    #             return temp
-
     def voloptimize(df, startdate, enddate, arr):
         maxprofit = window = 0
         count1 = arr[0][1] - arr[0][0] + 1

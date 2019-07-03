@@ -33,15 +33,7 @@ class Rsi(Strategy):
         mask = t['rsi'] <= lowerlimit
         mask1 = t['rsi'] >= upperlimit
         t['signal'] = np.where(mask, 'buy', (np.where(mask1, 'sell', 'None')))
-        #     print (t[['Date','rsi']][t['signal']=='sell'])
-        #     return Strategy.profit(t)
-        #     print("Profit is: ",net)
         return t
-
-    #     if t.shape[0]==0:
-    #         return 0
-    #     else:
-    #         return t
 
     def rsioptimize(df, startdate, enddate, dfcol, arr):
         maxprofit = upperlimit = lowerlimit = window = 0

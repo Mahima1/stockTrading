@@ -35,10 +35,6 @@ class MACD(Strategy, MA):
         where1 = np.where(mask1, 'buy', 'sell')
         q1['signal'] = np.where(mask, where1, 'None')
         q1 = q1.drop(columns=['diff', 'shift', 'multiple'])
-        # if q1.shape[0]==0:
-        #     return 0
-        # else:
-        #     return q1
         return q1
 
     def macdoptimize(df, startdate, enddate, dfcol, arr):

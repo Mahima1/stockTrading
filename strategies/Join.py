@@ -17,9 +17,6 @@ def optimizer(llist):
     # return var[at_index]
     return var
 
-
-# optimizer(llist)
-
 def join(arr):
     import pandas as pd
 
@@ -50,7 +47,6 @@ def join(arr):
         result.rename(columns={'signal' + first_key: 'signal'}, inplace=True)
         t = Portfolio.pfmanage(result, 'Close')
         return t
-
 
 # from .Boll import Boll
 # from .Vol import Vol
