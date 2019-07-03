@@ -29,7 +29,7 @@ def join(arr):
     count = len(list_of_keys)
     joined = arr[first_key]
     joined = joined[joined['signal'] != 'None']
-    if (count == 1):
+    if count == 1:
         result = joined.dropna()
         temp = result.copy()
         temp.rename(columns={'signal' + first_key: 'signal'}, inplace=True)
@@ -52,11 +52,11 @@ def join(arr):
         return t
 
 
-from .Boll import Boll
-from .Vol import Vol
-from .Rsi import Rsi
-from .Strategy import Strategy
-from .MACD import MACD
+# from .Boll import Boll
+# from .Vol import Vol
+# from .Rsi import Rsi
+# from .Strategy import Strategy
+# from .MACD import MACD
 
 # arr1=[[70,71],[20,21],[10,15]]
 # arr2=[[10,12],[2,4]]

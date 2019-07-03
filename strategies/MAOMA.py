@@ -6,6 +6,7 @@ from .MA import MA
 from .Portfolio import Portfolio
 import numpy as np
 
+
 class MAOMA(Strategy, MA):
     Strategy.names.append("Maoma")
 

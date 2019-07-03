@@ -34,8 +34,8 @@ class Klines(Strategy, MA):
         q3 = q3[(abs((q1['Close'] - q1['Low']) / (q1['High'] - q1['Open']))) >= 2]
         return q3
 
-    def maribozu(df, startdate, enddate, dfcol, window):
-        temp = Strategy.slicebydate(df, startdate, enddate, dfcol, window)
+    def maribozu(df, startdate, enddate):
+        temp = Strategy.slicebydate(df, startdate, enddate)
         temp2 = temp[abs((temp['Open'] - temp['Close']) / (temp['High'] - temp['Low'])) >= 0.95]
         return temp2
 
