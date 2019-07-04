@@ -45,7 +45,6 @@ class MAOMA(Strategy, MA):
             w2 = arr[1][0]
             for e in range(count2):
                 t = MAOMA.maomasig(df, startdate, enddate, dfcol, w1, w2)
-                # net=Strategy.profit(t,'Close')
                 net = Portfolio.pfmanage(t, 'Close')
                 if maxprofit < net:
                     maxprofit = net

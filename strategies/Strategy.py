@@ -1,4 +1,10 @@
 #     startdate=pd.to_datetime(14,origin=startdate,unit='D')
+# def profit(df, dfcol):
+#     df['sigvol'] = np.where((df['signal'] != 'None'), 10, 0)  # Z.money/df[dfcol]
+#     df['bought'] = np.where(df['signal'] == 'buy', df['sigvol'] * df[dfcol], 0)
+#     df['sold'] = np.where(df['signal'] == 'sell', df['sigvol'] * df[dfcol], 0)
+#     net = df['sold'].sum() - df['bought'].sum()
+#     return net
 
 import numpy as np
 
@@ -15,13 +21,6 @@ class Strategy:
 
     def volsig(df, window, startdate, enddate):
         raise NotImplementedError("Function not implemented here")
-
-    def profit(df, dfcol):
-        df['sigvol'] = np.where((df['signal'] != 'None'), 10, 0)  # Z.money/df[dfcol]
-        df['bought'] = np.where(df['signal'] == 'buy', df['sigvol'] * df[dfcol], 0)
-        df['sold'] = np.where(df['signal'] == 'sell', df['sigvol'] * df[dfcol], 0)
-        net = df['sold'].sum() - df['bought'].sum()
-        return net
 
     def slicebydate(df, startdate, enddate):
         temp = df[df[Strategy.datecol] >= startdate][df[Strategy.datecol] <= enddate]

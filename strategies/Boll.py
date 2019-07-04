@@ -49,8 +49,6 @@ class Boll(Strategy, MA):
             for e in range(count2):
                 t = Boll.bolsig(df, startdate, enddate, w, f)
                 net = Portfolio.pfmanage(t, 'Close')
-                # net=Strategy.profit(t,'Close')
-                # print ("net is : ",net)
                 if maxprofit < net:
                     maxprofit = net
                     factor = f
