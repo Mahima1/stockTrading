@@ -9,6 +9,8 @@ class Portfolio(Main):
             return 0
         t2 = df.copy()
         t2 = t2[t2['signal'] != 'None']
+        # totalSellSig = str(t2[t2['signal'] == 'sell'].shape[0])
+        # totalBuySig = str(t2[t2['signal'] == 'buy'].shape[0])
         t2['sigbinary'] = np.where(t2['signal'] == 'buy', 1, -1)
         t2['shifted'] = t2['sigbinary'].shift(1)
         t2['multi'] = t2['sigbinary'] * t2['shifted']
@@ -31,14 +33,15 @@ class Portfolio(Main):
             r = t.shape[0]
             for i in range(r):
                 if t['exec'].iloc[i] == 'buy':
-                    Portfolio.updatepf(0, Main.money / t[dfcol].iloc[i], 'buy')
+                    Portfolio.updatepf(0, (Main.money * ((100 - (Main.fee)) / 100)) / t[dfcol].iloc[i], 'buy')
                 if t['exec'].iloc[i] == 'sell':
                     Portfolio.updatepf(Main.stocks * t[dfcol].iloc[i], 0, 'sell')
         return Main.value(lastclose)
+        # , totalBuySig, totalSellSig
 
     def updatepf(moneyvalue, stocksvalue, sig):
         if sig == 'sell':
-            Main.money = moneyvalue
+            Main.money = moneyvalue * (100 - (Main.fee)) / 100
             Main.stocks = stocksvalue
         if sig == 'buy':
             Main.stocks = stocksvalue
