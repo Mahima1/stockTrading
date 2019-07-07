@@ -9,6 +9,8 @@ class Portfolio(Main):
             return 0
         t2 = df.copy()
         t2 = t2[t2['signal'] != 'None']
+        if t2.shape[0] == 0:
+            return 0
         # totalSellSig = str(t2[t2['signal'] == 'sell'].shape[0])
         # totalBuySig = str(t2[t2['signal'] == 'buy'].shape[0])
         t2['sigbinary'] = np.where(t2['signal'] == 'buy', 1, -1)
@@ -41,7 +43,7 @@ class Portfolio(Main):
 
     def updatepf(moneyvalue, stocksvalue, sig):
         if sig == 'sell':
-            Main.money = moneyvalue * (100 - (Main.fee)) / 100
+            Main.money = moneyvalue * (100 - (Main.fee)) / 100  # if fee=1% then here I am returning (money*0.99)
             Main.stocks = stocksvalue
         if sig == 'buy':
             Main.stocks = stocksvalue
