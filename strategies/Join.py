@@ -1,5 +1,5 @@
 from .Portfolio import Portfolio
-
+import pandas as pd
 
 def optimizer(llist):
     count = len(llist)
@@ -19,8 +19,6 @@ def optimizer(llist):
 
 
 def join(arr):
-    import pandas as pd
-
     joined = pd.DataFrame()
     list_of_keys = list(arr)
     first_key = list_of_keys[0]
@@ -48,3 +46,10 @@ def join(arr):
         result.rename(columns={'signal' + first_key: 'signal'}, inplace=True)
         t = Portfolio.pfmanage(result, 'Close')
         return t
+
+# arr={'_boll':Boll.bolsig(df,'2017-07-14 05:30:00','2019-05-26 05:30:00',14),
+#      '_rsi':Rsi.rsisig(df, '2017-07-14 05:30:00','2019-05-26 05:30:00' ,70,20,'Close', 14),
+#      '_vol':Vol.volsig(df, '2017-07-14 05:30:00','2019-05-26 05:30:00' ,14)
+#     }
+#
+# join(arr)
