@@ -1,2 +1,2 @@
 # stockTrading
-This software lets you analyse and helps you take informative decision regarding stock trading.
+This software lets you analyse and helps you take informed decisions regarding stock trading.
