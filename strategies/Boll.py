@@ -6,6 +6,31 @@ from .MA import MA
 
 
 class Boll(Strategy, MA):
+    '''
+Basic Info and Implementation:
+Bollinger Bands are a technical analysis tool.
+There are three lines that compose Bollinger Bands: A simple moving average (middle band) and an upper and lower band.
+The upper and lower bands are typically 2 standard deviations +/- from a 20-day simple moving average, but can be modified.
+
+Bollinger Bands Tell us:
+The closer the prices move to the upper band, the more overbought the market, hence a better chance of market moving towards equilibrium
+i.e prices can go down and selling of stocks can be done before that happens.
+The closer the prices move to the lower band, the more oversold the market
+
+Formula:
+BOLU= MA(TP,n) + (m∗σ[TP,n])
+BOLD= MA(TP,n) − (m∗σ[TP,n])
+
+where:
+BOLU=Upper Bollinger Band
+BOLD=Lower Bollinger Band
+MA=Moving average
+TP (typical price)=(High+Low+Close)÷3
+n=Number of days in smoothing period (typically 20)
+m=Number of standard deviations (typically 2)
+σ[TP,n]=Standard Deviation over last n periods of TP
+    '''
+
     Strategy.names.append('Bollinger_bands')
 
     # saved_args=0
@@ -14,6 +39,14 @@ class Boll(Strategy, MA):
         super(MA, self).__init__()
 
     def bollinger_bands(df, startdate, enddate, window, factor=2):
+        '''
+        @param startdate: Date ('YYYY-MM-DD')
+        @param enddate: Date ('YYYY-MM-DD')
+        @param window: int
+        @param factor: int or float (default is set to 2)
+        @return: Dataframe with TYPICAL PRICE, STD (standard deviation), UPPER BAND, LOWER BAND columns added into it
+        '''
+
         # Boll.saved_args=locals()
         temp = df.copy()
         temp['typical price'] = (temp['Close'] + temp['High'] + temp['Low']) / 3
