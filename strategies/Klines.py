@@ -48,6 +48,7 @@ class Klines(Strategy, MA):
 
     def umbrella(self, df, startdate, enddate, dfcol, window):
         '''
+        Candlestick Umbrella pattern is a kind of a doji with no upper shadow but a long lower shadow. The lower long shadow shows the evidence for buying pressure. The low price position indicates that plenty of sellers still are around. Umbrella candle pattern is interpreted as a reversal pattern.
 
         @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
         @param startdate: Date ('YYYY-MM-DD')
