@@ -18,14 +18,14 @@ i.e prices can go down and selling of stocks can be done before that happens.
 The closer the prices move to the lower band, the more oversold the market
 
 Formula:
-BOLU= MA(TP,n) + (m∗σ[TP,n])
-BOLD= MA(TP,n) − (m∗σ[TP,n])
+Upper Band = MA(TP,n) + (m∗σ[TP,n])
+Lower Band = MA(TP,n) − (m∗σ[TP,n])
 
 where:
-BOLU=Upper Bollinger Band
-BOLD=Lower Bollinger Band
+Upper Band = Upper Bollinger Band
+Lower Band = Lower Bollinger Band
 MA=Moving average
-TP (typical price)=(High+Low+Close)÷3
+TP (typical price)=(High+Low+Close)/3
 n=Number of days in smoothing period (typically 20)
 m=Number of standard deviations (typically 2)
 σ[TP,n]=Standard Deviation over last n periods of TP
@@ -38,8 +38,10 @@ m=Number of standard deviations (typically 2)
         super(Strategy, self).__init__()
         super(MA, self).__init__()
 
-    def bollinger_bands(df, startdate, enddate, window, factor=2):
+    def bollinger_bands(self, df, startdate, enddate, window, factor=2):
         '''
+
+        @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
         @param startdate: Date ('YYYY-MM-DD')
         @param enddate: Date ('YYYY-MM-DD')
         @param window: int
@@ -57,21 +59,42 @@ m=Number of standard deviations (typically 2)
         return temp
 
     def plotit(temp):
+        '''
+        Function for plotting bands in a time series graph
+        @return: void
+        '''
         plt.plot(temp['Date'], temp['typical price'])
         plt.plot(temp['Date'], temp['upper band'])
         plt.plot(temp['Date'], temp['lower band'])
 
-    def bolsig(df, startdate, enddate, window, factor=2):
+    def bolsig(self, df, startdate, enddate, window, factor=2):
+        '''
+
+        @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
+        @param startdate:
+        @param enddate:
+        @param window:
+        @param factor:
+        @return:
+        '''
         t = Boll.bollinger_bands(df, startdate, enddate, window, factor)
         mask1 = t['High'] >= t['upper band']
         mask = t['Low'] <= t['lower band']
         t['signal'] = np.where(mask, 'buy', (np.where(mask1, 'sell', 'None')))
         return t
 
-    def boloptimize(df, startdate, enddate, arr):
-        #         arr is list of lists of the form [[startrange,endrange], [startrange,endrange]] where lists inside are in order
-        #         of window and factor , we could use this type of list too [step,+-range] but here for simplicity we assumed step
-        #         is always integer 1 and hence we are not changing values by 0.1 or any other float number.
+    def boloptimize(self, df, startdate, enddate, arr):
+        '''
+
+        @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
+        @param startdate: Date ('YYYY-MM-DD')
+        @param enddate: Date ('YYYY-MM-DD')
+        @param arr: arr is list of lists of the form [[startrange,endrange], [startrange,endrange]] where lists inside are in order
+        of window and factor , we could use this type of list too [step,+-range] but here for simplicity we assumed step
+        is always integer 1 and hence we are not changing values by 0.1 or any other float number.
+        @return: list ['maxprofit=', 'window=', 'factor=','Boll']
+        '''
+
         maxprofit = factor = window = 0
         #     arr=[[10,80],[2,4]]          #use step here like [10,80,0.2] and inside inner loop chnage to window +=step
         count1 = arr[0][1] - arr[0][0] + 1
