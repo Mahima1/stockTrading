@@ -40,6 +40,8 @@ m=Number of standard deviations (typically 2)
 
     def bollinger_bands(self, df, startdate, enddate, window, factor=2):
         '''
+        calculates moving_average of TP ( typical price ) and its std deviation then upper band (+factor*std deviation)
+        and lower band  (-factor*std deviation) wrt moving_average line.
 
         @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
         @param startdate: Date ('YYYY-MM-DD')
@@ -58,11 +60,13 @@ m=Number of standard deviations (typically 2)
         temp['lower band'] = temp['roll'] - (factor * temp['std'])
         return temp
 
-    def plotit(temp):
+    def plotit(self, temp):
         '''
-        Function for plotting bands in a time series graph
+        Function for plotting bands in a time series graph.
+        @param temp: Dataframe returned from Bollinger_bands function.
         @return: void
         '''
+
         plt.plot(temp['Date'], temp['typical price'])
         plt.plot(temp['Date'], temp['upper band'])
         plt.plot(temp['Date'], temp['lower band'])
@@ -70,11 +74,12 @@ m=Number of standard deviations (typically 2)
     def bolsig(self, df, startdate, enddate, window, factor=2):
         '''
 
+
         @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
-        @param startdate:
-        @param enddate:
-        @param window:
-        @param factor:
+        @param startdate: Date ('YYYY-MM-DD')
+        @param enddate: Date ('YYYY-MM-DD')
+        @param window: int
+        @param factor: int or float (default = 2)
         @return:
         '''
         t = Boll.bollinger_bands(df, startdate, enddate, window, factor)
@@ -85,6 +90,9 @@ m=Number of standard deviations (typically 2)
 
     def boloptimize(self, df, startdate, enddate, arr):
         '''
+        This function finds best performing window (n) and factor(m) by calculating profits while iterating over values of
+        n and m in the range we have provided. It uses 'Bolsig' function which in turn uses 'bollinger_bands' function
+        to generate signals and calculate profits for every value of n and m.
 
         @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
         @param startdate: Date ('YYYY-MM-DD')
@@ -92,13 +100,16 @@ m=Number of standard deviations (typically 2)
         @param arr: arr is list of lists of the form [[startrange,endrange], [startrange,endrange]] where lists inside are in order
         of window and factor , we could use this type of list too [step,+-range] but here for simplicity we assumed step
         is always integer 1 and hence we are not changing values by 0.1 or any other float number.
+
         @return: list ['maxprofit=', 'window=', 'factor=','Boll']
         '''
 
         maxprofit = factor = window = 0
-        #     arr=[[10,80],[2,4]]          #use step here like [10,80,0.2] and inside inner loop chnage to window +=step
+        #     arr=[[10,80],[2,4]]          #use step here like [10,80,0.2] and inside inner loop change to window +=step
         count1 = arr[0][1] - arr[0][0] + 1
+        # count for outer loop iterating over range of window
         count2 = arr[1][1] - arr[1][0] + 1
+        # count for inner loop iterating over multiple of sigma
         w = arr[0][0]
         for p in range(count1):
             f = arr[1][0]
