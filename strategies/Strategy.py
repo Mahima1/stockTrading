@@ -7,30 +7,29 @@
 #     return net
 
 import numpy as np
+import mpl_finance as candle
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 
 
 class Strategy:
     names = []
     datecol = 'Date'
 
-    def rsisig(df, startdate, enddate, upperlimit, lowerlimit, window):
+    def rsisig(self, df, startdate, enddate, upperlimit, lowerlimit, window):
         raise NotImplementedError("Function not implemented here")
 
-    def bolsig(df, window, startdate, enddate):
+    def bolsig(self, df, window, startdate, enddate):
         raise NotImplementedError("Function not implemented here")
 
-    def volsig(df, window, startdate, enddate):
+    def volsig(self, df, window, startdate, enddate):
         raise NotImplementedError("Function not implemented here")
 
-    def slicebydate(df, startdate, enddate):
+    def slicebydate(self, df, startdate, enddate):
         temp = df[df[Strategy.datecol] >= startdate][df[Strategy.datecol] <= enddate]
         return temp
 
-    def candlesticks(df, startdate, enddate):
-        import mpl_finance as candle
-        import matplotlib.pyplot as plt
-        import matplotlib.ticker as ticker
-
+    def candlesticks(self, df, startdate, enddate):
         quotes = Strategy.slicebydate(df, startdate, enddate)
         fig, ax = plt.subplots()
         #     candle.candlestick2_ohlc(ax,quotes['Open'],quotes['High'],quotes['Low'],quotes['Close'],width=0.6,colorup='#53AA03',colordown="#C20074")
