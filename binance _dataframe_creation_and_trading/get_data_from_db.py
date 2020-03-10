@@ -7,16 +7,16 @@ binance github api link
 https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md
 '''
 
-import sqlite3
-import pandas as pd
-
-cnx=sqlite3.connect('./api/api.db')
-df = pd.read_sql_query("SELECT * FROM binance_data", cnx)
-
-df['Open_time']=pd.to_datetime(df['Open_time'])
-df['Close_time']=pd.to_datetime(df['Close_time'])
-df.rename(columns={'Open_time':'Date'}, inplace=True)
-df=df.drop(columns=['Quote_asset_volume','Buy_base_asset','Buy_quote_asset','Ignore'])
+# import sqlite3
+# import pandas as pd
+#
+# cnx=sqlite3.connect('./api/api.db')
+# df = pd.read_sql_query("SELECT * FROM binance_data", cnx)
+#
+# df['Open_time']=pd.to_datetime(df['Open_time'])
+# df['Close_time']=pd.to_datetime(df['Close_time'])
+# df.rename(columns={'Open_time':'Date'}, inplace=True)
+# df=df.drop(columns=['Quote_asset_volume','Buy_base_asset','Buy_quote_asset','Ignore'])
 
 # def make_db(coinSymbol, klineInterval, noSamples):
 #     '''

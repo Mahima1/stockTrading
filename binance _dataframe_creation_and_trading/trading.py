@@ -3,9 +3,10 @@ import pandas as pd
 import time
 from timeloop import Timeloop
 from datetime import timedelta
+
 # from stockTrading.strategies.MAOMA import MAOMA
 # from stockTrading.strategies.Portfolio import Portfolio
-from stockTrading import strategies
+from .. import strategies
 
 class trading:
 
@@ -56,8 +57,8 @@ class trading:
             #     net,totalbuysig,totalsellsig=Portfolio.pfmanage(temp,'Close')
             #     print ("portfolio value: {}   Buy sigs: {}   Sell sigs: {} ".format(net,totalbuysig,totalsellsig))
             #     print("last date is : "+str(lastdate)+"  last signal is: "+str(lastSig))
-            temp = MAOMA.maomasig(sliceddf, starttime, endtime, 'Close', 30, 60)
-            net = Portfolio.pfmanage(temp, 'Close')
+            temp = strategies.MAOMA.maomasig(sliceddf, starttime, endtime, 'Close', 30, 60)
+            net = strategies.Portfolio.pfmanage(temp, 'Close')
             print("portfolio value: ", net)
             print("last date is : ", lastdate)
 

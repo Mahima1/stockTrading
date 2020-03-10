@@ -3,12 +3,12 @@ import datetime
 import requests
 # import sys
 # sys.path.append('/home/r/stockTrading/')
-from stockTrading.strategies.MACD import MACD
-from stockTrading.strategies.Boll import Boll
-from stockTrading.strategies.Join import join, optimizer
-from stockTrading.strategies.Rsi import Rsi
-from stockTrading.strategies.Vol import Vol
-from stockTrading.strategies.MAOMA import MAOMA
+# from stockTrading.strategies.MACD import MACD
+# from stockTrading.strategies.Boll import Boll
+# from stockTrading.strategies.Join import join, optimizer
+# from stockTrading.strategies.Rsi import Rsi
+# from stockTrading.strategies.Vol import Vol
+# from stockTrading.strategies.MAOMA import MAOMA
 
 
 class Backtesting:
