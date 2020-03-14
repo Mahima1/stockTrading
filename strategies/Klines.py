@@ -68,12 +68,15 @@ class Klines(Strategy, MA):
 
     def maribozu(self, df, startdate, enddate):
         '''
-        The black marubozu is simply a long black (down, or red on the charts below) candle, with little to no upper or lower   shadows. The pattern shows that sellers controlled the trading day from open to close, and is therefore a bearish pattern
+        The marubozu is simply a long black candle, with little to no upper or lower shadows.
+        The pattern shows that sellers controlled the trading day from open to close, and is therefore a bearish pattern.
+
         @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
         @param startdate: Date ('YYYY-MM-DD')
         @param enddate: Date ('YYYY-MM-DD')
-        @return: Dataframe with
+        @return: Dataframe with only maribozu making samples
         '''
+
         temp = Strategy.slicebydate(df, startdate, enddate)
         temp2 = temp[abs((temp['Open'] - temp['Close']) / (temp['High'] - temp['Low'])) >= 0.95]
         return temp2

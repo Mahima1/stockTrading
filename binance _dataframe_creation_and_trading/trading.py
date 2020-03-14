@@ -4,9 +4,11 @@ import time
 from timeloop import Timeloop
 from datetime import timedelta
 
-# from stockTrading.strategies.MAOMA import MAOMA
+from strategies.MAOMA import MAOMA
+
+
 # from stockTrading.strategies.Portfolio import Portfolio
-from .. import strategies
+
 
 class trading:
 
@@ -35,6 +37,7 @@ class trading:
         trading.get_new_db.counter = 0
 
         # df=pd.read_pickle("./api/df_of_10k_samples_ETHBTC_2019-06-24 17:39:00_2019-07-01 16:09:00.pkl")
+
         starttime = df['Date'].iloc[0]
         lastindex = df.shape[0] - 1
         endtime = df['Date'].iloc[lastindex]
@@ -47,6 +50,7 @@ class trading:
         def paper_trade(starttime, endtime):
             '''
 
+
             @param starttime:
             @param endtime:
             @return:
@@ -57,8 +61,8 @@ class trading:
             #     net,totalbuysig,totalsellsig=Portfolio.pfmanage(temp,'Close')
             #     print ("portfolio value: {}   Buy sigs: {}   Sell sigs: {} ".format(net,totalbuysig,totalsellsig))
             #     print("last date is : "+str(lastdate)+"  last signal is: "+str(lastSig))
-            temp = strategies.MAOMA.maomasig(sliceddf, starttime, endtime, 'Close', 30, 60)
-            net = strategies.Portfolio.pfmanage(temp, 'Close')
+            temp = MAOMA.maomasig(sliceddf, starttime, endtime, 'Close', 30, 60)
+            net = Portfolio.pfmanage(temp, 'Close')
             print("portfolio value: ", net)
             print("last date is : ", lastdate)
 
@@ -70,5 +74,5 @@ class trading:
                 tl.stop()
                 break
 
-    def __init__(self):
-        print("paper_trading class")
+    # def __init__(self):
+    #     print("paper_trading class")

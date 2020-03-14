@@ -1,6 +1,7 @@
 import pandas as pd
 import datetime
 import requests
+
 # import sys
 # sys.path.append('/home/r/stockTrading/')
 # from stockTrading.strategies.MACD import MACD
@@ -9,7 +10,6 @@ import requests
 # from stockTrading.strategies.Rsi import Rsi
 # from stockTrading.strategies.Vol import Vol
 # from stockTrading.strategies.MAOMA import MAOMA
-
 
 class Backtesting:
     '''
