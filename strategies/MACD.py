@@ -20,11 +20,13 @@ MACD tell us:
 MACD triggers technical signals when it crosses above (to buy) or below (to sell) its signal line.
 The speed of crossovers is also taken as a signal of a market is overbought or oversold.
 The MACD has a positive value whenever the 12-period EMA (blue) is above the 26-period MA (red) 
-and a negative value when the 12-period EMA is below the 26-period MA.
+and a negative value when the 12-period MA is below the 26-period MA.
 
 Formulae:
-MACD=12-Period MA − 26-Period MA
+MACD = 12-Period MA − 26-Period MA
 
+where: 
+MA is moving average
 
     '''
 
@@ -36,14 +38,16 @@ MACD=12-Period MA − 26-Period MA
 
     def macd(self, df, startdate, enddate, dfcol, window1, window2):
         '''
+        It is using moving_average function to return two dataframes , one with smaller window and other with bigger one calculated in
+        their 'ROLL' column.
 
-        @param df:
-        @param startdate:
-        @param enddate:
-        @param dfcol:
-        @param window1:
-        @param window2:
-        @return:
+        @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
+        @param startdate: Date ('YYYY-MM-DD')
+        @param enddate: Date ('YYYY-MM-DD')
+        @param dfcol: column of DataFrame whose moving average is to be calculated
+        @param window1: int , bigger window (default 26)
+        @param window2: int, smaller window (default 12)
+        @return: t1, t2 both Dateframes with added column of 'ROLL' to them
         '''
         t1 = MA.moving_average(df, startdate, enddate, dfcol, window1)
         t2 = MA.moving_average(df, startdate, enddate, dfcol, window2)
@@ -51,16 +55,25 @@ MACD=12-Period MA − 26-Period MA
 
     def plotit(self, t1, t2):
         '''
-
-
-        @param t1:
-        @param t2:
-        @return:
+        Function for plotting bands in a time series graph.
+        @param temp: Dataframe returned from macd function.
+        @return: void
         '''
         plt.plot(t1['Date'], t1['roll'])
         plt.plot(t2['Date'], t2['roll'])
 
     def macdsig(self, df, startdate, enddate, dfcol, window1, window2):
+        '''
+        Uses dataframe returned from macd func
+
+        @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
+        @param startdate: Date ('YYYY-MM-DD')
+        @param enddate: Date ('YYYY-MM-DD')
+        @param dfcol: column of DataFrame whose moving average is to be calculated
+        @param window1: int , bigger window (default 26)
+        @param window2: int, smaller window (default 12)
+        @return: Dataframe with
+        '''
         q1, q2 = MACD.macd(df, startdate, enddate, dfcol, window1, window2)
         q1['diff'] = q1['roll'] - q2['roll']
         q1['shift'] = (q1['diff'].shift(1))

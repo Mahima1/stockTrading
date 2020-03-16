@@ -40,7 +40,7 @@ m=Number of standard deviations (typically 2)
 
     def bollinger_bands(self, df, startdate, enddate, window, factor=2):
         '''
-        calculates moving_average of TP ( typical price ) and its std deviation then upper band (+factor*std deviation)
+        Calculates moving_average of TP ( typical price ) and its std deviation then upper band (+factor*std deviation)
         and lower band  (-factor*std deviation) wrt moving_average line.
 
         @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
