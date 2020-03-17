@@ -6,7 +6,6 @@ from .Portfolio import Portfolio
 
 from .MA import MA
 
-
 class MACD(Strategy, MA):
     Strategy.names.append('MACD')
     '''
@@ -64,7 +63,8 @@ MA is moving average
 
     def macdsig(self, df, startdate, enddate, dfcol, window1, window2):
         '''
-        Uses dataframe returned from macd func
+        Uses dataframe returned from macd func to get two moving averages then takes the difference of two.
+        Diff will be positive or negative so we find where diff is changing signs and that will be our buy or sell signal.
 
         @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
         @param startdate: Date ('YYYY-MM-DD')
@@ -72,7 +72,8 @@ MA is moving average
         @param dfcol: column of DataFrame whose moving average is to be calculated
         @param window1: int , bigger window (default 26)
         @param window2: int, smaller window (default 12)
-        @return: Dataframe with
+        @return: Dataframe with 'SIGNAL' column added to it
+
         '''
         q1, q2 = MACD.macd(df, startdate, enddate, dfcol, window1, window2)
         q1['diff'] = q1['roll'] - q2['roll']
@@ -87,14 +88,20 @@ MA is moving average
 
     def macdoptimize(self, df, startdate, enddate, dfcol, arr):
         '''
+        This function finds best performing window (n) and factor(m) by calculating profits while iterating over values of
+        n and m in the range we have provided. It uses 'macdsig' function which in turn uses 'macd' function
+        to generate signals and calculate profits for every value of n and m.
 
+        @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
+        @param startdate: Date ('YYYY-MM-DD')
+        @param enddate: Date ('YYYY-MM-DD')
+        @param dfcol: any price colunm on which to apply macd strategy on
+        @param arr: arr is list of lists of the form [[startrange,endrange], [startrange,endrange]] where lists inside are in order
+        of windowShort and windowLong , we could use this type of list too [step,+-range] but here for simplicity we assumed step
+        is always integer 1 and hence we are not changing values by 0.1 or any other float number.
 
-        @param df:
-        @param startdate:
-        @param enddate:
-        @param dfcol:
-        @param arr:
-        @return:
+        @return: list ['maxprofit=', 'windowShort', 'windowLong=','MACD']
+
         '''
         maxprofit = windowshort = windowlong = 0
         count1 = arr[0][1] - arr[0][0] + 1
