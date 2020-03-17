@@ -73,14 +73,15 @@ m=Number of standard deviations (typically 2)
 
     def bolsig(self, df, startdate, enddate, window, factor=2):
         '''
-
+        Uses dataframe returned from bollingerbands func to get upper rand lower bands then we compare 'High' and 'Low'
+        with those bands and generate signal of sell as high surpasses upper and low declines below lower.
 
         @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
         @param startdate: Date ('YYYY-MM-DD')
         @param enddate: Date ('YYYY-MM-DD')
         @param window: int
         @param factor: int or float (default = 2)
-        @return:
+        @return: Dataframe with 'SIGNAL' column added to it
         '''
         t = Boll.bollinger_bands(df, startdate, enddate, window, factor)
         mask1 = t['High'] >= t['upper band']
