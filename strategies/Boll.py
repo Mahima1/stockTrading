@@ -76,7 +76,7 @@ m=Number of standard deviations (typically 2)
         Uses dataframe returned from bollingerbands func to get upper rand lower bands then we compare 'High' and 'Low'
         with those bands and generate signal of sell as high surpasses upper and low declines below lower.
 
-        @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
+        @param df: Dataframe object with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
         @param startdate: Date ('YYYY-MM-DD')
         @param enddate: Date ('YYYY-MM-DD')
         @param window: int
@@ -95,7 +95,7 @@ m=Number of standard deviations (typically 2)
         n and m in the range we have provided. It uses 'Bolsig' function which in turn uses 'bollinger_bands' function
         to generate signals and calculate profits for every value of n and m.
 
-        @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
+        @param df: Dataframe object with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
         @param startdate: Date ('YYYY-MM-DD')
         @param enddate: Date ('YYYY-MM-DD')
         @param arr: arr is list of lists of the form [[startrange,endrange], [startrange,endrange]] where lists inside are in order

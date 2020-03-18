@@ -43,7 +43,7 @@ MA is moving average
         @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
         @param startdate: Date ('YYYY-MM-DD')
         @param enddate: Date ('YYYY-MM-DD')
-        @param dfcol: column of DataFrame whose moving average is to be calculated
+        @param dfcol: String, column of DataFrame whose moving average is to be calculated
         @param window1: int , bigger window (default 26)
         @param window2: int, smaller window (default 12)
         @return: t1, t2 both Dateframes with added column of 'ROLL' to them
@@ -68,10 +68,10 @@ MA is moving average
         Uses dataframe returned from macd func to get two moving averages then takes the difference of two.
         Diff will be positive or negative so we find where diff is changing signs and that will be our buy or sell signal.
 
-        @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
+        @param df: Dataframe object with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
         @param startdate: Date ('YYYY-MM-DD')
         @param enddate: Date ('YYYY-MM-DD')
-        @param dfcol: column of DataFrame whose moving average is to be calculated
+        @param dfcol: String, column of DataFrame whose moving average is to be calculated
         @param window1: int , bigger window (default 26)
         @param window2: int, smaller window (default 12)
         @return: Dataframe with 'SIGNAL' column added to it
@@ -97,7 +97,7 @@ MA is moving average
         @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
         @param startdate: Date ('YYYY-MM-DD')
         @param enddate: Date ('YYYY-MM-DD')
-        @param dfcol: any price colunm on which to apply maoma strategy on
+        @param dfcol: String, any price colunm on which to apply maoma strategy on
         @param arr: arr is list of lists of the form [[startrange,endrange], [startrange,endrange]] where lists inside are in order
         of windowShort and windowLong , we could use this type of list too [step,+-range] but here for simplicity we assumed step
         is always integer 1 and hence we are not changing values by 0.1 or any other float number.
