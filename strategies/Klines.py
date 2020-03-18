@@ -24,7 +24,7 @@ class Klines(Strategy, MA):
         Here if after a trend (positive or negative) doji appears then we consider it being a somewhat valid signal.
         Implemented by first filtering out samples which follow a trend and trend is seen by taking slope of every 5 samples
         and if it greater than 0.6 , its a trend (+ and - both) .
-        
+
         Formulae :
         slope of every 5 samples >= 0.6
         open - close / high - low <= 0.3
@@ -56,7 +56,7 @@ class Klines(Strategy, MA):
 
     def umbrella(self, df, startdate, enddate, dfcol, window):
         '''
-
+        Basic Info and Implementation:
         Candlestick Umbrella pattern is a kind of a doji with no upper shadow but a long lower shadow.
         The lower long shadow shows the evidence for buying pressure. The low price position indicates
         that plenty of sellers still are around. Umbrella candle pattern is interpreted as a reversal pattern.

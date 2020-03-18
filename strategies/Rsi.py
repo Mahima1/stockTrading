@@ -4,6 +4,19 @@ from .Strategy import Strategy
 
 
 class Rsi(Strategy):
+    '''
+    Basic Info and Implementation:
+    The relative strength index (RSI) is a momentum indicator that measures the magnitude of recent price changes to evaluate overbought or oversold conditions in the price of a stock or other asset. The RSI is displayed as an oscillator (a line graph that moves between two extremes) and can have a reading from 0 to 100.
+
+    What RSI tell us:
+    The RSI compares bullish and bearish price momentum plotted against the graph of an asset's price.
+Signals are considered overbought when the indicator is above 70% and oversold when the indicator is below 30%.
+
+Formulae:
+RSI = 100 * ( x / 1 + x )
+x = average gain / average loss
+
+    '''
     Strategy.names.append('Rsi')
 
     def __init__(self, dfcol, window):
@@ -12,7 +25,17 @@ class Rsi(Strategy):
         self.dfcol = dfcol
         self.window = window
 
-    def rsi(df, startdate, enddate, dfcol, window):
+    def rsi(self, df, startdate, enddate, dfcol, window):
+        '''
+
+
+        @param df:
+        @param startdate:
+        @param enddate:
+        @param dfcol:
+        @param window:
+        @return:
+        '''
         temp = Strategy.slicebydate(df, startdate, enddate)
         temp2 = temp[dfcol].diff()
         profit, loss = temp2.copy(), temp2.copy()
@@ -25,17 +48,47 @@ class Rsi(Strategy):
         temp['rsi'] = (x * 100)
         return temp
 
-    def plotit(temp):
+    def plotit(self, temp):
+        '''
+
+
+        @param temp:
+        @return:
+        '''
         temp.plot(x='Date', y='rsi')
 
-    def rsisig(df, startdate, enddate, upperlimit, lowerlimit, dfcol, window):
+    def rsisig(self, df, startdate, enddate, upperlimit, lowerlimit, dfcol, window):
+        '''
+
+
+        @param df:
+        @param startdate:
+        @param enddate:
+        @param upperlimit:
+        @param lowerlimit:
+        @param dfcol:
+        @param window:
+        @return:
+
+        '''
         t = Rsi.rsi(df, startdate, enddate, dfcol, window)
         mask = t['rsi'] <= lowerlimit
         mask1 = t['rsi'] >= upperlimit
         t['signal'] = np.where(mask, 'buy', (np.where(mask1, 'sell', 'None')))
         return t
 
-    def rsioptimize(df, startdate, enddate, dfcol, arr):
+    def rsioptimize(self, df, startdate, enddate, dfcol, arr):
+        '''
+
+
+
+        @param df:
+        @param startdate:
+        @param enddate:
+        @param dfcol:
+        @param arr:
+        @return:
+        '''
         maxprofit = upperlimit = lowerlimit = window = 0
         count1 = arr[0][1] - arr[0][0] + 1
         count2 = arr[1][1] - arr[1][0] + 1
