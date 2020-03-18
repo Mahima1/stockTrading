@@ -8,6 +8,25 @@ import numpy as np
 
 
 class MAOMA(Strategy, MA):
+    '''
+    Basic Info and Implementation:
+Moving Average Of Moving Average (MACD) is a trend-following momentum indicator
+that shows the relationship between two moving averages of a security’s price.
+
+The MAOMA is calculated by subtracting the 26-period Moving Average (MA) from the 12-period MA.
+
+MAOMA tell us:
+MAOMA triggers technical signals when it crosses above (to buy) or below (to sell) its signal line.
+The speed of crossovers is also taken as a signal of a market is overbought or oversold.
+The MACD has a positive value whenever the 12-period EMA (blue) is above the 26-period MA (red)
+and a negative value when the 12-period MA is below the 26-period MA.
+
+Formulae:
+MACD = 12-Period MA − 26-Period MA
+
+where:
+MA is moving average
+    '''
     Strategy.names.append("Maoma")
 
     def __init__(self, window1, window2):
@@ -16,16 +35,47 @@ class MAOMA(Strategy, MA):
         self.window1 = window1
         self.window2 = window2
 
-    def maoma(df, startdate, enddate, dfcol, window1, window2):
+    def maoma(self, df, startdate, enddate, dfcol, window1, window2):
+        '''
+        MAOMA func creates two dataFrames with 'Roll' column added to them using moving_average func.
+        t2 DataFrame has the moving_average of t1.
+
+        @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
+        @param startdate: Date ('YYYY-MM-DD')
+        @param enddate: Date ('YYYY-MM-DD')
+        @param dfcol: column of DataFrame whose moving average is to be calculated
+        @param window1: int , bigger window (default 26)
+        @param window2: int, smaller window (default 12)
+        @return: t1, t2 both Dateframes with added column of 'ROLL' to them
+
+        '''
         t1 = MA.moving_average(df, startdate, enddate, dfcol, window1)
         t2 = MA.moving_average(t1, startdate, enddate, 'roll', window2)
         return t1, t2
 
-    def plotit(t1, t2):
+    def plotit(self, t1, t2):
+        '''
+        Function for plotting bands in a time series graph.
+        @param t1: Dataframe returned from moving_average func
+        @param t2: Dataframe returned from t1 whose MA is calculated
+        @return: void
+        '''
         plt.plot(t1['Date'], t1['roll'])
         plt.plot(t2['Date'], t2['roll'])
 
-    def maomasig(df, startdate, enddate, dfcol, window1, window2):
+    def maomasig(self, df, startdate, enddate, dfcol, window1, window2):
+        '''
+        Uses dataframe returned from macd func to get two moving averages then takes the difference of two.
+        Diff will be positive or negative so we find where diff is changing signs and that will be our buy or sell signal.
+
+        @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
+        @param startdate: Date ('YYYY-MM-DD')
+        @param enddate: Date ('YYYY-MM-DD')
+        @param dfcol: column of DataFrame whose moving average is to be calculated
+        @param window1: int , bigger window (default 26)
+        @param window2: int, smaller window (default 12)
+        @return: Dataframe with 'SIGNAL' column added to it
+        '''
         q1, q2 = MAOMA.maoma(df, startdate, enddate, dfcol, window1, window2)
         q1['diff'] = q1['roll'] - q2['roll']
         q1['shift'] = (q1['diff'].shift(1))
@@ -38,7 +88,23 @@ class MAOMA(Strategy, MA):
         # return q1, lastSignal
         return q1
 
-    def maomaoptimize(df, startdate, enddate, dfcol, arr):
+    def maomaoptimize(self, df, startdate, enddate, dfcol, arr):
+        '''
+        This function finds best performing window (n) and factor(m) by calculating profits while iterating over values of
+        n and m in the range we have provided. It uses 'macdsig' function which in turn uses 'macd' function
+        to generate signals and calculate profits for every value of n and m.
+
+        @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
+        @param startdate: Date ('YYYY-MM-DD')
+        @param enddate: Date ('YYYY-MM-DD')
+        @param dfcol: any price colunm on which to apply maoma strategy on
+        @param arr: arr is list of lists of the form [[startrange,endrange], [startrange,endrange]] where lists inside are in order
+        of windowShort and windowLong , we could use this type of list too [step,+-range] but here for simplicity we assumed step
+        is always integer 1 and hence we are not changing values by 0.1 or any other float number.
+
+        @return: list ['maxprofit=', 'windowShort', 'windowLong=','MAOMA']
+
+        '''
         maxprofit = windowshort = windowlong = 0
         count1 = arr[0][1] - arr[0][0] + 1
         count2 = arr[1][1] - arr[1][0] + 1
