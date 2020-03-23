@@ -1,6 +1,7 @@
 import numpy as np
 from .Portfolio import Portfolio
 from .Strategy import Strategy
+from .Dr import Dr
 
 
 class Rsi(Strategy):
@@ -10,11 +11,11 @@ class Rsi(Strategy):
 
     What RSI tell us:
     The RSI compares bullish and bearish price momentum plotted against the graph of an asset's price.
-Signals are considered overbought when the indicator is above 70% and oversold when the indicator is below 30%.
+    Signals are considered overbought when the indicator is above 70% and oversold when the indicator is below 30%.
 
-Formulae:
-RSI = 100 * ( x / 1 + x )
-x = average gain / average loss
+    Formulae:
+    RSI = 100 * ( x / (1 + x ) )
+    x = average gain / average loss
 
     '''
     Strategy.names.append('Rsi')
@@ -27,48 +28,50 @@ x = average gain / average loss
 
     def rsi(self, df, startdate, enddate, dfcol, window):
         '''
+        This func first calculates daily return of column as parameter for dfcol then it takes avg gain and avg loss by first filtering positive daily retuns and negative in different dataframes then calculates moving averages for both. The ratio of  averages is our x in the formulae then the dataframe with 'rsi' column is returned with the results stored.
 
 
-        @param df:
-        @param startdate:
-        @param enddate:
-        @param dfcol:
-        @param window:
-        @return:
+        @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
+        @param startdate: Date ('YYYY-MM-DD')
+        @param enddate: Date ('YYYY-MM-DD')
+        @param dfcol: String, column of DataFrame whose moving average is to be calculated
+        @param window: int
+        @return: Dataframe with TYPICAL PRICE, STD (standard deviation), UPPER BAND, LOWER BAND columns added into it
+
         '''
         temp = Strategy.slicebydate(df, startdate, enddate)
-        temp2 = temp[dfcol].diff()
-        profit, loss = temp2.copy(), temp2.copy()
-        profit[profit < 0] = 0
-        loss[loss > 0] = 0
-        profitroll = profit.rolling(window, min_periods=window).mean()
-        lossroll = loss.rolling(window, min_periods=window).mean().abs()
+        # temp = df.copy()
+        temp2 = Dr.daily_return(dfcol)
+        mask = temp2[dfcol + '_dr'] < 0
+        mask1 = temp2[dfcol + '_dr'] >= 0
+        temp['loss'] = np.where(mask, abs(temp2), 0)
+        temp['profit'] = np.where(mask1, temp2, 0)
+        profitroll = temp['profit'].rolling(window, min_periods=window).mean()
+        lossroll = temp['loss'].rolling(window, min_periods=window).mean()
         x = profitroll / lossroll
-        x = (x / (1 + x))
-        temp['rsi'] = (x * 100)
+        y = (x / (1 + x))
+        temp['rsi'] = (y * 100)
         return temp
 
     def plotit(self, temp):
         '''
-
-
-        @param temp:
-        @return:
+        Function for plotting bands in a time series graph.
+        @param temp: Dataframe returned from Bollinger_bands function.
+        @return: void
         '''
+
         temp.plot(x='Date', y='rsi')
 
     def rsisig(self, df, startdate, enddate, upperlimit, lowerlimit, dfcol, window):
         '''
-
-
-        @param df:
-        @param startdate:
-        @param enddate:
-        @param upperlimit:
-        @param lowerlimit:
-        @param dfcol:
-        @param window:
-        @return:
+        @param df: Dataframe object with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
+        @param startdate: Date ('YYYY-MM-DD')
+        @param enddate: Date ('YYYY-MM-DD')
+        @param upperlimit: int , upper limit after which security can be called overbrought 
+        @param lowerlimit: lower limit after which security can be called oversold
+        @param dfcol: String, column of DataFrame whose moving average is to be calculated
+        @param window: int ,
+        @return: Dataframe with 'SIGNAL' column added to it
 
         '''
         t = Rsi.rsi(df, startdate, enddate, dfcol, window)
@@ -81,13 +84,13 @@ x = average gain / average loss
         '''
 
 
-
         @param df:
         @param startdate:
         @param enddate:
         @param dfcol:
         @param arr:
         @return:
+
         '''
         maxprofit = upperlimit = lowerlimit = window = 0
         count1 = arr[0][1] - arr[0][0] + 1
