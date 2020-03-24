@@ -12,7 +12,8 @@ class Vol(Strategy, MA, Portfolio):
         super(Strategy, self).__init__()
         super(MA, self).__init__()
 
-    def volsig(self, df, startdate, enddate, window):
+    @classmethod
+    def volsig(cls, df, startdate, enddate, window):
         temp = MA.moving_average(df, startdate, enddate, 'Volume', window)
         temp['%vol'] = (abs(temp['Volume'] - temp['roll']) / temp['roll']) * 100
         temp['Close_dr'] = ((temp['Close'].shift(1) - temp['Close']) / temp['Close']) * 100
@@ -20,7 +21,8 @@ class Vol(Strategy, MA, Portfolio):
         #         return Strategy.profit(temp)
         return temp
 
-    def voloptimize(self, df, startdate, enddate, arr):
+    @classmethod
+    def voloptimize(cls, df, startdate, enddate, arr):
         maxprofit = window = 0
         count1 = arr[0][1] - arr[0][0] + 1
         # we could have passed single list too like arr=[5,100]

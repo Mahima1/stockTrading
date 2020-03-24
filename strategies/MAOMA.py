@@ -34,7 +34,8 @@ MA is moving average
         super(Strategy, self).__init__()
         super(MA, self).__init__()
 
-    def maoma(self, df, startdate, enddate, dfcol, window1, window2):
+    @classmethod
+    def maoma(cls, df, startdate, enddate, dfcol, window1, window2):
         """
         MAOMA func creates two dataFrames with 'Roll' column added to them using moving_average func.
         t2 DataFrame has the moving_average of t1.
@@ -52,7 +53,8 @@ MA is moving average
         t2 = MA.moving_average(t1, startdate, enddate, 'roll', window2)
         return t1, t2
 
-    def plotit(self, t1, t2):
+    @classmethod
+    def plotit(cls, t1, t2):
         """
         Function for plotting bands in a time series graph.
         @param t1: Dataframe returned from moving_average func
@@ -62,7 +64,8 @@ MA is moving average
         plt.plot(t1['Date'], t1['roll'])
         plt.plot(t2['Date'], t2['roll'])
 
-    def maomasig(self, df, startdate, enddate, dfcol, window1, window2):
+    @classmethod
+    def maomasig(cls, df, startdate, enddate, dfcol, window1, window2):
         """
         Uses dataframe returned from macd func to get two moving averages then takes the difference of two.
         Diff will be positive or negative so we find where diff is changing signs and that will be our buy or sell signal.
@@ -87,7 +90,8 @@ MA is moving average
         # return q1, lastSignal
         return q1
 
-    def maomaoptimize(self, df, startdate, enddate, dfcol, arr):
+    @classmethod
+    def maomaoptimize(cls, df, startdate, enddate, dfcol, arr):
         """
         This function finds best performing window (n) and factor(m) by calculating profits while iterating over values of
         n and m in the range we have provided. It uses 'macdsig' function which in turn uses 'macd' function

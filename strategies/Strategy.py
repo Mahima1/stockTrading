@@ -15,11 +15,13 @@ class Strategy:
     names = []
     datecol = 'Date'
 
-    def slicebydate(self, df, startdate, enddate):
+    @classmethod
+    def slicebydate(cls, df, startdate, enddate):
         temp = df[df[Strategy.datecol] >= startdate][df[Strategy.datecol] <= enddate]
         return temp
 
-    def candlesticks(self, df, startdate, enddate):
+    @classmethod
+    def candlesticks(cls, df, startdate, enddate):
         quotes = Strategy.slicebydate(df, startdate, enddate)
         fig, ax = plt.subplots()
         #     candle.candlestick2_ohlc(ax,quotes['Open'],quotes['High'],quotes['Low'],quotes['Close'],width=0.6,colorup='#53AA03',colordown="#C20074")

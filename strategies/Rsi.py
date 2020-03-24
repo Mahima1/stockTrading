@@ -24,7 +24,8 @@ class Rsi(Strategy):
     def __init__(self):
         super(Strategy, self).__init__()
 
-    def rsi(self, df, startdate, enddate, dfcol, window):
+    @classmethod
+    def rsi(cls, df, startdate, enddate, dfcol, window):
         """
         This func first calculates daily return of column as parameter for dfcol then it takes avg gain and avg loss by first filtering positive daily retuns and negative in different dataframes then calculates moving averages for both. The ratio of  averages is our x in the formulae then the dataframe with 'rsi' column is returned with the results stored.
 
@@ -50,7 +51,8 @@ class Rsi(Strategy):
         temp['rsi'] = (y * 100)
         return temp
 
-    def plotit(self, temp):
+    @classmethod
+    def plotit(cls, temp):
         """
         Function for plotting bands in a time series graph.
         @param temp: Dataframe returned from Bollinger_bands function.
@@ -59,7 +61,8 @@ class Rsi(Strategy):
 
         temp.plot(x='Date', y='rsi')
 
-    def rsisig(self, df, startdate, enddate, upperlimit, lowerlimit, dfcol, window):
+    @classmethod
+    def rsisig(cls, df, startdate, enddate, upperlimit, lowerlimit, dfcol, window):
         """
         Uses dataframe returned from rsi func to get upper rand lower bands then we compare 'rsi' values
         with those bands and generate signal of sell as rsi values surpasses upper and buy  if declines below lower.
@@ -80,7 +83,8 @@ class Rsi(Strategy):
         t['signal'] = np.where(mask, 'buy', (np.where(mask1, 'sell', 'None')))
         return t
 
-    def rsioptimize(self, df, startdate, enddate, dfcol, arr):
+    @classmethod
+    def rsioptimize(cls, df, startdate, enddate, dfcol, arr):
         """
     This function finds best performing window (n) and upper limit (u) and lower limit (l) by calculating profits while iterating over values of n ,u and l in the range we have provided. It uses 'rsisig' function which in turn uses 'Rsi' function
         to generate signals and calculate profits for every value of n , u, l.
