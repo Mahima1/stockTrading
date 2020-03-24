@@ -7,6 +7,7 @@ class Normalization(Strategy):
     def __init__(self):
         super(Strategy, self).__init__()
 
+    @classmethod
     def norm(self, df, dfcol):
         df[dfcol + 'norm'] = df[dfcol] / df[dfcol].iloc[0]
         return df

@@ -32,7 +32,8 @@ n = number of time periods​
     def __init__(self):
         super(Strategy, self).__init__()
 
-    def moving_average(self, df, startdate, enddate, dfcol, window):
+    @classmethod
+    def moving_average(cls, df, startdate, enddate, dfcol, window):
         """
         @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
         @param startdate: Date ('YYYY-MM-DD')

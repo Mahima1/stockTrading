@@ -74,7 +74,8 @@ m=Number of standard deviations (typically 2)
         plt.plot(temp['Date'], temp['upper band'])
         plt.plot(temp['Date'], temp['lower band'])
 
-    def bolsig(self, df, startdate, enddate, window, factor=2):
+    @classmethod
+    def bolsig(cls, df, startdate, enddate, window, factor=2):
         """
         Uses dataframe returned from bollingerbands func to get upper rand lower bands then we compare 'High' and 'Low'
         with those bands and generate signal of sell as high surpasses upper and low declines below lower.
@@ -92,7 +93,8 @@ m=Number of standard deviations (typically 2)
         t['signal'] = np.where(mask, 'buy', (np.where(mask1, 'sell', 'None')))
         return t
 
-    def boloptimize(self, df, startdate, enddate, arr):
+    @classmethod
+    def boloptimize(cls, df, startdate, enddate, arr):
         """
         This function finds best performing window (n) and factor(m) by calculating profits while iterating over values of
         n and m in the range we have provided. It uses 'Bolsig' function which in turn uses 'bollinger_bands' function

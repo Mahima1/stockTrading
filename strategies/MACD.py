@@ -8,8 +8,7 @@ from .Strategy import Strategy
 
 class MACD(Strategy, MA):
     Strategy.names.append('MACD')
-    '''
-Basic Info and Implementation:
+    """Basic Info and Implementation:
 Moving Average Convergence Divergence (MACD) is a trend-following momentum indicator
 that shows the relationship between two moving averages of a security’s price.
 
@@ -26,14 +25,14 @@ MACD = 12-Period MA − 26-Period MA
 
 where: 
 MA is moving average
-
-    '''
+"""
 
     def __init__(self):
         super(Strategy, self).__init__()
         super(MA, self).__init__()
 
-    def macd(self, df, startdate, enddate, dfcol, window1, window2):
+    @classmethod
+    def macd(cls, df, startdate, enddate, dfcol, window1, window2):
         """
         It is using moving_average function to return two dataframes , one with smaller window and other with bigger one calculated in
         their 'ROLL' column.
@@ -50,7 +49,8 @@ MA is moving average
         t2 = MA.moving_average(df, startdate, enddate, dfcol, window2)
         return t1, t2
 
-    def plotit(self, t1, t2):
+    @classmethod
+    def plotit(cls, t1, t2):
         """
         Function for plotting bands in a time series graph.
         @param t1:
@@ -60,7 +60,8 @@ MA is moving average
         plt.plot(t1['Date'], t1['roll'])
         plt.plot(t2['Date'], t2['roll'])
 
-    def macdsig(self, df, startdate, enddate, dfcol, window1, window2):
+    @classmethod
+    def macdsig(cls, df, startdate, enddate, dfcol, window1, window2):
         """
         Uses dataframe returned from macd func to get two moving averages then takes the difference of two.
         Diff will be positive or negative so we find where diff is changing signs and that will be our buy or sell signal.
@@ -85,7 +86,8 @@ MA is moving average
         q1 = q1.drop(columns=['diff', 'shift', 'multiple'])
         return q1
 
-    def macdoptimize(self, df, startdate, enddate, dfcol, arr):
+    @classmethod
+    def macdoptimize(cls, df, startdate, enddate, dfcol, arr):
         """
         This function finds best performing window (n) and factor(m) by calculating profits while iterating over values of
         n and m in the range we have provided. It uses 'macdsig' function which in turn uses 'macd' function

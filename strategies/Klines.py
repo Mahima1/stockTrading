@@ -16,7 +16,8 @@ class Klines(Strategy, MA):
         super(Strategy, self).__init__()
         super(MA, self).__init__()
 
-    def doji(self, df, startdate, enddate, dfcol, window):
+    @classmethod
+    def doji(cls, df, startdate, enddate, dfcol, window):
         """
         Basic Info and Implementation:
         A doji is a name for a session in which the candlestick for a security has an open and close that are virtually equal and
@@ -54,7 +55,8 @@ class Klines(Strategy, MA):
 
     #     print(q3)# if -ve denotes downward trend
 
-    def umbrella(self, df, startdate, enddate, dfcol, window):
+    @classmethod
+    def umbrella(cls, df, startdate, enddate, dfcol, window):
         """
         Basic Info and Implementation:
         Candlestick Umbrella pattern is a kind of a doji with no upper shadow but a long lower shadow.
@@ -80,7 +82,8 @@ class Klines(Strategy, MA):
         q3 = q3[(abs((q1['Close'] - q1['Low']) / (q1['High'] - q1['Open']))) >= 2]
         return q3
 
-    def maribozu(self, df, startdate, enddate):
+    @classmethod
+    def maribozu(cls, df, startdate, enddate):
         """
         The marubozu is simply a long black candle, with little to no upper or lower shadows.
         The pattern shows that sellers controlled the trading day from open to close, and is therefore a bearish pattern .
@@ -96,7 +99,8 @@ class Klines(Strategy, MA):
         temp2 = temp[abs((temp['Open'] - temp['Close']) / (temp['High'] - temp['Low'])) >= 0.95]
         return temp2
 
-    def plotit(self, t, startdate, enddate):
+    @classmethod
+    def plotit(cls, t, startdate, enddate):
         """
         Function for plotting bands in a time series graph.
 

@@ -108,5 +108,3 @@ class Backtesting:
 
     for i in range(len(coinSymbols)):
         back_test(coinSymbols[i], klineInterval)
-
-

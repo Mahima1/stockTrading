@@ -8,6 +8,7 @@ class Dr(Strategy):
         super(Strategy, self).__init__()
         pass
 
-    def daily_return(self, df, dfcol):
+    @classmethod
+    def daily_return(cls, df, dfcol):
         df[dfcol + '_dr'] = ((df[dfcol].shift(1) - df[dfcol]) / df[dfcol]) * 100
         return df
