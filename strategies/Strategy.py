@@ -16,15 +16,6 @@ class Strategy:
     names = []
     datecol = 'Date'
 
-    def rsisig(self, df, startdate, enddate, upperlimit, lowerlimit, window):
-        raise NotImplementedError("Function not implemented here")
-
-    def bolsig(self, df, window, startdate, enddate):
-        raise NotImplementedError("Function not implemented here")
-
-    def volsig(self, df, window, startdate, enddate):
-        raise NotImplementedError("Function not implemented here")
-
     def slicebydate(self, df, startdate, enddate):
         temp = df[df[Strategy.datecol] >= startdate][df[Strategy.datecol] <= enddate]
         return temp

@@ -22,7 +22,6 @@ class Rsi(Strategy):
 
     def __init__(self):
         super(Strategy, self).__init__()
-        super(Strategy, self).__init__()
 
     def rsi(self, df, startdate, enddate, dfcol, window):
         '''
@@ -43,8 +42,8 @@ class Rsi(Strategy):
         mask1 = temp2[dfcol + '_dr'] >= 0
         temp['loss'] = np.where(mask, abs(temp2[dfcol + '_dr']), 0)
         temp['profit'] = np.where(mask1, temp2[dfcol + '_dr'], 0)
-        profitroll = temp['profit'].rolling(window, min_periods=window).mean()
-        lossroll = temp['loss'].rolling(window, min_periods=window).mean()
+        profitroll = temp['profit'].rolling(window, min_periods=1).mean()
+        lossroll = temp['loss'].rolling(window, min_periods=1).mean()
         x = profitroll / lossroll
         y = (x / (1 + x))
         temp['rsi'] = (y * 100)
