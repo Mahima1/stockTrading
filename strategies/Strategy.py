@@ -48,7 +48,5 @@ class Strategy:
         fig.autofmt_xdate()
         plt.plot()
 
-    def __init__(self, df, startdate, enddate):
-        self.df = df
-        self.startdate = startdate
-        self.enddate = enddate
+    def __init__(self):
+        pass

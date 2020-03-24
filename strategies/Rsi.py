@@ -20,11 +20,9 @@ class Rsi(Strategy):
     '''
     Strategy.names.append('Rsi')
 
-    def __init__(self, dfcol, window):
+    def __init__(self):
         super(Strategy, self).__init__()
         super(Strategy, self).__init__()
-        self.dfcol = dfcol
-        self.window = window
 
     def rsi(self, df, startdate, enddate, dfcol, window):
         '''
@@ -40,12 +38,11 @@ class Rsi(Strategy):
 
         '''
         temp = Strategy.slicebydate(df, startdate, enddate)
-        # temp = df.copy()
         temp2 = Dr.daily_return(dfcol)
         mask = temp2[dfcol + '_dr'] < 0
         mask1 = temp2[dfcol + '_dr'] >= 0
-        temp['loss'] = np.where(mask, abs(temp2), 0)
-        temp['profit'] = np.where(mask1, temp2, 0)
+        temp['loss'] = np.where(mask, abs(temp2[dfcol + '_dr']), 0)
+        temp['profit'] = np.where(mask1, temp2[dfcol + '_dr'], 0)
         profitroll = temp['profit'].rolling(window, min_periods=window).mean()
         lossroll = temp['loss'].rolling(window, min_periods=window).mean()
         x = profitroll / lossroll
@@ -64,11 +61,14 @@ class Rsi(Strategy):
 
     def rsisig(self, df, startdate, enddate, upperlimit, lowerlimit, dfcol, window):
         '''
+        Uses dataframe returned from rsi func to get upper rand lower bands then we compare 'rsi' values
+        with those bands and generate signal of sell as rsi values surpasses upper and buy  if declines below lower.
+
         @param df: Dataframe object with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
         @param startdate: Date ('YYYY-MM-DD')
         @param enddate: Date ('YYYY-MM-DD')
-        @param upperlimit: int , upper limit after which security can be called overbrought
-        @param lowerlimit: lower limit after which security can be called oversold
+        @param upperlimit: int , upper limit after which security can be called overbrought (typically 70)
+        @param lowerlimit: lower limit after which security can be called oversold (typically 30)
         @param dfcol: String, column of DataFrame whose moving average is to be calculated
         @param window: int,
         @return: Dataframe with 'SIGNAL' column added to it
@@ -82,7 +82,8 @@ class Rsi(Strategy):
 
     def rsioptimize(self, df, startdate, enddate, dfcol, arr):
         '''
-
+    This function finds best performing window (n) and upper limit (u) and lower limit (l) by calculating profits while iterating over values of n ,u and l in the range we have provided. It uses 'rsisig' function which in turn uses 'Rsi' function
+        to generate signals and calculate profits for every value of n , u, l.
 
         @param df: Dataframe object with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
         @param startdate: Date ('YYYY-MM-DD')
@@ -91,6 +92,7 @@ class Rsi(Strategy):
         @param arr: arr is list of lists of the form [[startrange,endrange], [startrange,endrange]] where lists inside are in order
         of window and factor , we could use this type of list too [step,+-range] but here for simplicity we assumed step
         is always integer 1 and hence we are not changing values by 0.1 or any other float number.
+
         @return: list ['maxprofit=', 'upperlimit=', 'lowerlimit=', 'window=','Rsi']
 
         '''

@@ -28,10 +28,8 @@ n = number of time periods​
     '''
     Strategy.names.append('MA')
 
-    def __init__(self, dfcol, window):
+    def __init__(self):
         super(Strategy, self).__init__()
-        self.dfcol = dfcol
-        self.window = window
 
     def moving_average(self, df, startdate, enddate, dfcol, window):
         '''

@@ -6,6 +6,7 @@ from .Portfolio import Portfolio
 
 from .MA import MA
 
+
 class MACD(Strategy, MA):
     Strategy.names.append('MACD')
     '''
@@ -29,11 +30,9 @@ MA is moving average
 
     '''
 
-    def __init__(self, window1, window2):
+    def __init__(self):
         super(Strategy, self).__init__()
         super(MA, self).__init__()
-        self.window1 = window1
-        self.window2 = window2
 
     def macd(self, df, startdate, enddate, dfcol, window1, window2):
         '''

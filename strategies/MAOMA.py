@@ -29,11 +29,9 @@ MA is moving average
     '''
     Strategy.names.append("Maoma")
 
-    def __init__(self, window1, window2):
+    def __init__(self):
         super(Strategy, self).__init__()
         super(MA, self).__init__()
-        self.window1 = window1
-        self.window2 = window2
 
     def maoma(self, df, startdate, enddate, dfcol, window1, window2):
         '''

@@ -38,6 +38,7 @@ m=Number of standard deviations (typically 2)
         super(Strategy, self).__init__()
         super(MA, self).__init__()
 
+
     def bollinger_bands(self, df, startdate, enddate, window, factor=2):
         '''
         Calculates moving_average of TP ( typical price ) and its std deviation then upper band (+factor*std deviation)
