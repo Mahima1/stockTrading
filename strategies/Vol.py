@@ -1,7 +1,8 @@
 import numpy as np
-from .Strategy import Strategy
-from .Portfolio import Portfolio
+
 from .MA import MA
+from .Portfolio import Portfolio
+from .Strategy import Strategy
 
 
 class Vol(Strategy, MA, Portfolio):

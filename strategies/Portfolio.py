@@ -1,4 +1,5 @@
 import numpy as np
+
 from .Main import Main
 
 
@@ -35,7 +36,7 @@ class Portfolio(Main):
             r = t.shape[0]
             for i in range(r):
                 if t['exec'].iloc[i] == 'buy':
-                    Portfolio.updatepf(0, (Main.money * ((100 - (Main.fee)) / 100)) / t[dfcol].iloc[i], 'buy')
+                    Portfolio.updatepf(0, (Main.money * ((100 - Main.fee) / 100)) / t[dfcol].iloc[i], 'buy')
                 if t['exec'].iloc[i] == 'sell':
                     Portfolio.updatepf(Main.stocks * t[dfcol].iloc[i], 0, 'sell')
         return Main.value(lastclose)
@@ -43,7 +44,7 @@ class Portfolio(Main):
 
     def updatepf(self, moneyvalue, stocksvalue, sig):
         if sig == 'sell':
-            Main.money = moneyvalue * (100 - (Main.fee)) / 100  # if fee=1% then here I am returning (money*0.99)
+            Main.money = moneyvalue * (100 - Main.fee) / 100  # if fee=1% then here I am returning (money*0.99)
             Main.stocks = stocksvalue
         if sig == 'buy':
             Main.stocks = stocksvalue

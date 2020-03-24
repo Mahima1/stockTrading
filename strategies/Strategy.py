@@ -6,10 +6,9 @@
 #     net = df['sold'].sum() - df['bought'].sum()
 #     return net
 
-import numpy as np
-import mpl_finance as candle
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
+import mpl_finance as candle
 
 
 class Strategy:

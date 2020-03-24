@@ -1,14 +1,15 @@
 # -----------------MAOMA reperesents MOVING AVERAGE OF MOVING AVERAGE---------------------------
 
 import matplotlib.pyplot as plt
-from .Strategy import Strategy
+import numpy as np
+
 from .MA import MA
 from .Portfolio import Portfolio
-import numpy as np
+from .Strategy import Strategy
 
 
 class MAOMA(Strategy, MA):
-    '''
+    """
     Basic Info and Implementation:
 Moving Average Of Moving Average (MACD) is a trend-following momentum indicator
 that shows the relationship between two moving averages of a security’s price.
@@ -26,7 +27,7 @@ MACD = 12-Period MA − 26-Period MA
 
 where:
 MA is moving average
-    '''
+    """
     Strategy.names.append("Maoma")
 
     def __init__(self):
@@ -34,7 +35,7 @@ MA is moving average
         super(MA, self).__init__()
 
     def maoma(self, df, startdate, enddate, dfcol, window1, window2):
-        '''
+        """
         MAOMA func creates two dataFrames with 'Roll' column added to them using moving_average func.
         t2 DataFrame has the moving_average of t1.
 
@@ -46,23 +47,23 @@ MA is moving average
         @param window2: int, smaller window (default 12)
         @return: t1, t2 both Dateframes with added column of 'ROLL' to them
 
-        '''
+        """
         t1 = MA.moving_average(df, startdate, enddate, dfcol, window1)
         t2 = MA.moving_average(t1, startdate, enddate, 'roll', window2)
         return t1, t2
 
     def plotit(self, t1, t2):
-        '''
+        """
         Function for plotting bands in a time series graph.
         @param t1: Dataframe returned from moving_average func
         @param t2: Dataframe returned from t1 whose MA is calculated
         @return: void
-        '''
+        """
         plt.plot(t1['Date'], t1['roll'])
         plt.plot(t2['Date'], t2['roll'])
 
     def maomasig(self, df, startdate, enddate, dfcol, window1, window2):
-        '''
+        """
         Uses dataframe returned from macd func to get two moving averages then takes the difference of two.
         Diff will be positive or negative so we find where diff is changing signs and that will be our buy or sell signal.
 
@@ -73,7 +74,7 @@ MA is moving average
         @param window1: int , bigger window (default 26)
         @param window2: int, smaller window (default 12)
         @return: Dataframe with 'SIGNAL' column added to it
-        '''
+        """
         q1, q2 = MAOMA.maoma(df, startdate, enddate, dfcol, window1, window2)
         q1['diff'] = q1['roll'] - q2['roll']
         q1['shift'] = (q1['diff'].shift(1))
@@ -87,7 +88,7 @@ MA is moving average
         return q1
 
     def maomaoptimize(self, df, startdate, enddate, dfcol, arr):
-        '''
+        """
         This function finds best performing window (n) and factor(m) by calculating profits while iterating over values of
         n and m in the range we have provided. It uses 'macdsig' function which in turn uses 'macd' function
         to generate signals and calculate profits for every value of n and m.
@@ -102,7 +103,7 @@ MA is moving average
 
         @return: list ['maxprofit=', 'windowShort', 'windowLong=','MAOMA']
 
-        '''
+        """
         maxprofit = windowshort = windowlong = 0
         count1 = arr[0][1] - arr[0][0] + 1
         count2 = arr[1][1] - arr[1][0] + 1

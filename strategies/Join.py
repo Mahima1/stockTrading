@@ -1,5 +1,6 @@
-from .Portfolio import Portfolio
 import pandas as pd
+
+from .Portfolio import Portfolio
 
 
 def optimizer(llist):

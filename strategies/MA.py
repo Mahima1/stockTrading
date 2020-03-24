@@ -1,9 +1,10 @@
 import matplotlib.pyplot as plt
+
 from .Strategy import Strategy
 
 
-class MA:
-    '''
+class MA(Strategy):
+    """
 Basic Info and Implementation:
 A moving average (MA) is a widely used indicator in technical analysis that helps smooth out price action by
 filtering out the “noise” from random short-term price fluctuations.
@@ -25,32 +26,32 @@ where:
 Ai = price of security for day i
 n = number of time periods​
 
-    '''
+    """
     Strategy.names.append('MA')
 
     def __init__(self):
         super(Strategy, self).__init__()
 
     def moving_average(self, df, startdate, enddate, dfcol, window):
-        '''
+        """
         @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
         @param startdate: Date ('YYYY-MM-DD')
         @param enddate: Date ('YYYY-MM-DD')
+        @param dfcol: String, column of DataFrame whose moving average is to be calculated
         @param window: int
-        @param factor: int or float (default is set to 2)
         @return: Dataframe with 'ROLL' column added into it which is the moving_average column
 
-        '''
+        """
         temp = Strategy.slicebydate(df, startdate, enddate)
         temp['roll'] = temp.rolling(window, min_periods=window)[dfcol].mean()
         return temp
 
     def plotit(self, temp):
-        '''
+        """
         Function for plotting bands in a time series graph.
         @param temp: Dataframe returned from moving_average func
         @return: void
-        '''
+        """
         plt.plot(temp['Date'], temp['roll'])
 
 # -----------moving average function which was predicting next dates and applying rolling mean there too----------

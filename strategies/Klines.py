@@ -1,13 +1,13 @@
-from .Strategy import Strategy
 from .MA import MA
+from .Strategy import Strategy
 
 
 class Klines(Strategy, MA):
-    '''
+    """
     Candlestick charts are a technical tool that packs data for multiple time frames into single price bars.
     This makes them more useful than traditional open-high, low-close bars or simple lines that connect the dots of closing prices.
     Candlesticks build patterns that predict price direction once completed.
-    '''
+    """
     Strategy.names.append('Doji')
     Strategy.names.append('Umbrella')
     Strategy.names.append('Moribozu')
@@ -17,7 +17,7 @@ class Klines(Strategy, MA):
         super(MA, self).__init__()
 
     def doji(self, df, startdate, enddate, dfcol, window):
-        '''
+        """
         Basic Info and Implementation:
         A doji is a name for a session in which the candlestick for a security has an open and close that are virtually equal and
         are often components in patterns.Alone, doji are neutral patterns that are also featured in a number of important patterns.
@@ -41,7 +41,7 @@ class Klines(Strategy, MA):
         @param dfcol: String, Name of dataframe column on which to apply this analytics like 'Close' or 'Open'
         @param window: int, Number of days in smoothing period
         @return: Dataframe with only those samples which make this pattern
-        '''
+        """
         q1 = MA.moving_average(df, startdate, enddate, dfcol, window)
         q3 = q1.copy()
         q1['shiftedroll'] = q1['roll'].shift(5)
@@ -55,7 +55,7 @@ class Klines(Strategy, MA):
     #     print(q3)# if -ve denotes downward trend
 
     def umbrella(self, df, startdate, enddate, dfcol, window):
-        '''
+        """
         Basic Info and Implementation:
         Candlestick Umbrella pattern is a kind of a doji with no upper shadow but a long lower shadow.
         The lower long shadow shows the evidence for buying pressure. The low price position indicates
@@ -70,7 +70,7 @@ class Klines(Strategy, MA):
         @param window: int, number of days to use in analysis
         @return: dataframe object filtered with only those samples which create a meaningful umbrella
 
-        '''
+        """
         q1 = MA.moving_average(df, startdate, enddate, dfcol, window)
         q3 = q1.copy()
         q1['shiftedroll'] = q1['roll'].shift(5)
@@ -81,7 +81,7 @@ class Klines(Strategy, MA):
         return q3
 
     def maribozu(self, df, startdate, enddate):
-        '''
+        """
         The marubozu is simply a long black candle, with little to no upper or lower shadows.
         The pattern shows that sellers controlled the trading day from open to close, and is therefore a bearish pattern .
         This func calculates the ratio of difference of 'open','close' and difference of 'high','low' and filters out those with ratio >0.95 hence we get samples with big body.
@@ -90,21 +90,21 @@ class Klines(Strategy, MA):
         @param startdate: Date ('YYYY-MM-DD')
         @param enddate: Date ('YYYY-MM-DD')
         @return: Dataframe with only maribozu making samples
-        '''
+        """
 
         temp = Strategy.slicebydate(df, startdate, enddate)
         temp2 = temp[abs((temp['Open'] - temp['Close']) / (temp['High'] - temp['Low'])) >= 0.95]
         return temp2
 
     def plotit(self, t, startdate, enddate):
-        '''
+        """
         Function for plotting bands in a time series graph.
 
         @param t: Dataframe returned from candlesticks function of the Strategy module
         @param startdate: Date ('YYYY-MM-DD')
         @param enddate: Date ('YYYY-MM-DD')
         @return: void
-        '''
+        """
         Strategy.candlesticks(t, startdate, enddate)
 #
 # Klines.doji(spy,'2007-08-08','2008-10-10')

@@ -1,9 +1,10 @@
 class Main:
     stocks = 0
-    money = 10  # =>Bitcoins are 10
+    money = 10  # => Bitcoins are 10
     fee = 0.1
 
-    def value(lastclose):
+    @classmethod
+    def value(cls, lastclose):
         if Main.money == 0:
             val = (Main.stocks * lastclose)
         elif Main.stocks == 0:

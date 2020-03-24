@@ -1,11 +1,12 @@
 import numpy as np
+
+from .Dr import Dr
 from .Portfolio import Portfolio
 from .Strategy import Strategy
-from .Dr import Dr
 
 
 class Rsi(Strategy):
-    '''
+    """
     Basic Info and Implementation:
     The relative strength index (RSI) is a momentum indicator that measures the magnitude of recent price changes to evaluate overbought or oversold conditions in the price of a stock or other asset. The RSI is displayed as an oscillator (a line graph that moves between two extremes) and can have a reading from 0 to 100.
 
@@ -17,14 +18,14 @@ class Rsi(Strategy):
     RSI = 100 * ( x / (1 + x ) )
     x = average gain / average loss
 
-    '''
+    """
     Strategy.names.append('Rsi')
 
     def __init__(self):
         super(Strategy, self).__init__()
 
     def rsi(self, df, startdate, enddate, dfcol, window):
-        '''
+        """
         This func first calculates daily return of column as parameter for dfcol then it takes avg gain and avg loss by first filtering positive daily retuns and negative in different dataframes then calculates moving averages for both. The ratio of  averages is our x in the formulae then the dataframe with 'rsi' column is returned with the results stored.
 
 
@@ -35,7 +36,7 @@ class Rsi(Strategy):
         @param window: int
         @return: Dataframe with TYPICAL PRICE, STD (standard deviation), UPPER BAND, LOWER BAND columns added into it
 
-        '''
+        """
         temp = Strategy.slicebydate(df, startdate, enddate)
         temp2 = Dr.daily_return(dfcol)
         mask = temp2[dfcol + '_dr'] < 0
@@ -50,16 +51,16 @@ class Rsi(Strategy):
         return temp
 
     def plotit(self, temp):
-        '''
+        """
         Function for plotting bands in a time series graph.
         @param temp: Dataframe returned from Bollinger_bands function.
         @return: void
-        '''
+        """
 
         temp.plot(x='Date', y='rsi')
 
     def rsisig(self, df, startdate, enddate, upperlimit, lowerlimit, dfcol, window):
-        '''
+        """
         Uses dataframe returned from rsi func to get upper rand lower bands then we compare 'rsi' values
         with those bands and generate signal of sell as rsi values surpasses upper and buy  if declines below lower.
 
@@ -72,7 +73,7 @@ class Rsi(Strategy):
         @param window: int,
         @return: Dataframe with 'SIGNAL' column added to it
 
-        '''
+        """
         t = Rsi.rsi(df, startdate, enddate, dfcol, window)
         mask = t['rsi'] <= lowerlimit
         mask1 = t['rsi'] >= upperlimit
@@ -80,7 +81,7 @@ class Rsi(Strategy):
         return t
 
     def rsioptimize(self, df, startdate, enddate, dfcol, arr):
-        '''
+        """
     This function finds best performing window (n) and upper limit (u) and lower limit (l) by calculating profits while iterating over values of n ,u and l in the range we have provided. It uses 'rsisig' function which in turn uses 'Rsi' function
         to generate signals and calculate profits for every value of n , u, l.
 
@@ -94,7 +95,7 @@ class Rsi(Strategy):
 
         @return: list ['maxprofit=', 'upperlimit=', 'lowerlimit=', 'window=','Rsi']
 
-        '''
+        """
         maxprofit = upperlimit = lowerlimit = window = 0
         count1 = arr[0][1] - arr[0][0] + 1
         count2 = arr[1][1] - arr[1][0] + 1

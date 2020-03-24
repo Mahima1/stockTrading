@@ -1,12 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
+
+from .MA import MA
 from .Portfolio import Portfolio
 from .Strategy import Strategy
-from .MA import MA
 
 
 class Boll(Strategy, MA):
-    '''
+    """
 Basic Info and Implementation:
 Bollinger Bands are a technical analysis tool.
 There are three lines that compose Bollinger Bands: A simple moving average (middle band) and an upper and lower band.
@@ -29,7 +30,7 @@ TP (typical price)=(High+Low+Close)/3
 n=Number of days in smoothing period (typically 20)
 m=Number of standard deviations (typically 2)
 σ[TP,n]=Standard Deviation over last n periods of TP
-    '''
+    """
 
     Strategy.names.append('Bollinger_bands')
 
@@ -38,9 +39,9 @@ m=Number of standard deviations (typically 2)
         super(Strategy, self).__init__()
         super(MA, self).__init__()
 
-
-    def bollinger_bands(self, df, startdate, enddate, window, factor=2):
-        '''
+    @classmethod
+    def bollinger_bands(cls, df, startdate, enddate, window, factor=2):
+        """
         Calculates moving_average of TP ( typical price ) and its std deviation then upper band (+factor*std deviation)
         and lower band  (-factor*std deviation) wrt moving_average line.
 
@@ -50,7 +51,7 @@ m=Number of standard deviations (typically 2)
         @param window: int
         @param factor: int or float (default is set to 2)
         @return: Dataframe with TYPICAL PRICE, STD (standard deviation), UPPER BAND, LOWER BAND columns added into it
-        '''
+        """
 
         # Boll.saved_args=locals()
         temp = df.copy()
@@ -61,19 +62,20 @@ m=Number of standard deviations (typically 2)
         temp['lower band'] = temp['roll'] - (factor * temp['std'])
         return temp
 
-    def plotit(self, temp):
-        '''
+    @classmethod
+    def plotit(cls, temp):
+        """
         Function for plotting bands in a time series graph.
         @param temp: Dataframe returned from Bollinger_bands function.
         @return: void
-        '''
+        """
 
         plt.plot(temp['Date'], temp['typical price'])
         plt.plot(temp['Date'], temp['upper band'])
         plt.plot(temp['Date'], temp['lower band'])
 
     def bolsig(self, df, startdate, enddate, window, factor=2):
-        '''
+        """
         Uses dataframe returned from bollingerbands func to get upper rand lower bands then we compare 'High' and 'Low'
         with those bands and generate signal of sell as high surpasses upper and low declines below lower.
 
@@ -83,7 +85,7 @@ m=Number of standard deviations (typically 2)
         @param window: int
         @param factor: int or float (default = 2)
         @return: Dataframe with 'SIGNAL' column added to it
-        '''
+        """
         t = Boll.bollinger_bands(df, startdate, enddate, window, factor)
         mask1 = t['High'] >= t['upper band']
         mask = t['Low'] <= t['lower band']
@@ -91,7 +93,7 @@ m=Number of standard deviations (typically 2)
         return t
 
     def boloptimize(self, df, startdate, enddate, arr):
-        '''
+        """
         This function finds best performing window (n) and factor(m) by calculating profits while iterating over values of
         n and m in the range we have provided. It uses 'Bolsig' function which in turn uses 'bollinger_bands' function
         to generate signals and calculate profits for every value of n and m.
@@ -104,7 +106,7 @@ m=Number of standard deviations (typically 2)
         is always integer 1 and hence we are not changing values by 0.1 or any other float number.
 
         @return: list ['maxprofit=', 'window=', 'factor=','Boll']
-        '''
+        """
 
         maxprofit = factor = window = 0
         #     arr=[[10,80],[2,4]]          #use step here like [10,80,0.2] and inside inner loop change to window +=step
