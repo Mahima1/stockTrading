@@ -8,7 +8,7 @@ class Dr(Strategy):
         super(Strategy, self).__init__()
         self.dfcol = dfcol
 
-    def daily_return(df, dfcol):
+    def daily_return(self, df, dfcol):
         # z=Strategy.slicebydate(df,startdate,enddate)
         df[dfcol + '_dr'] = ((df[dfcol].shift(1) - df[dfcol]) / df[dfcol]) * 100
         return df

@@ -1,6 +1,7 @@
 from .Portfolio import Portfolio
 import pandas as pd
 
+
 def optimizer(llist):
     count = len(llist)
     profit = 0

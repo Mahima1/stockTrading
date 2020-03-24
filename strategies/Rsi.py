@@ -67,10 +67,10 @@ class Rsi(Strategy):
         @param df: Dataframe object with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
         @param startdate: Date ('YYYY-MM-DD')
         @param enddate: Date ('YYYY-MM-DD')
-        @param upperlimit: int , upper limit after which security can be called overbrought 
+        @param upperlimit: int , upper limit after which security can be called overbrought
         @param lowerlimit: lower limit after which security can be called oversold
         @param dfcol: String, column of DataFrame whose moving average is to be calculated
-        @param window: int ,
+        @param window: int,
         @return: Dataframe with 'SIGNAL' column added to it
 
         '''
@@ -84,12 +84,14 @@ class Rsi(Strategy):
         '''
 
 
-        @param df:
-        @param startdate:
-        @param enddate:
-        @param dfcol:
-        @param arr:
-        @return:
+        @param df: Dataframe object with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
+        @param startdate: Date ('YYYY-MM-DD')
+        @param enddate: Date ('YYYY-MM-DD')
+        @param dfcol: String, column of DataFrame whose moving average is to be calculated
+        @param arr: arr is list of lists of the form [[startrange,endrange], [startrange,endrange]] where lists inside are in order
+        of window and factor , we could use this type of list too [step,+-range] but here for simplicity we assumed step
+        is always integer 1 and hence we are not changing values by 0.1 or any other float number.
+        @return: list ['maxprofit=', 'upperlimit=', 'lowerlimit=', 'window=','Rsi']
 
         '''
         maxprofit = upperlimit = lowerlimit = window = 0

@@ -3,7 +3,7 @@ from .Main import Main
 
 
 class Portfolio(Main):
-    def pfmanage(df, dfcol):  # managing pf using first buy and sell signal
+    def pfmanage(self, df, dfcol):  # managing pf using first buy and sell signal
         Main.reset()
         if df.shape[0] == 0:
             return 0
@@ -41,7 +41,7 @@ class Portfolio(Main):
         return Main.value(lastclose)
         # , totalBuySig, totalSellSig
 
-    def updatepf(moneyvalue, stocksvalue, sig):
+    def updatepf(self, moneyvalue, stocksvalue, sig):
         if sig == 'sell':
             Main.money = moneyvalue * (100 - (Main.fee)) / 100  # if fee=1% then here I am returning (money*0.99)
             Main.stocks = stocksvalue
@@ -49,5 +49,5 @@ class Portfolio(Main):
             Main.stocks = stocksvalue
             Main.money = moneyvalue
 
-    def printpf(t, i):
+    def printpf(self, t, i):
         print("Money and stocks are:  {}  ,{}   on date {} ".format(Main.money, Main.stocks, t['Date'].iloc[i]))

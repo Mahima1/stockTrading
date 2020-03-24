@@ -8,6 +8,6 @@ class Normalization(Strategy):
         super(Strategy, self).__init__()
         self.dfcol = dfcol
 
-    def norm(df, dfcol):
+    def norm(self, df, dfcol):
         df[dfcol + 'norm'] = df[dfcol] / df[dfcol].iloc[0]
         return df
