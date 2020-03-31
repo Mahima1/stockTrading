@@ -1,12 +1,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from .MA import MA
-from .Portfolio import Portfolio
-from .Strategy import Strategy
+from stock_trading.strategies.MA import MA
+from stock_trading.strategies.Portfolio import Portfolio
+from stock_trading.strategies.Strategy import Strategy
 
 
-class MACD(Strategy, MA):
+class MACD(Strategy):
     Strategy.names.append('MACD')
     """Basic Info and Implementation:
 Moving Average Convergence Divergence (MACD) is a trend-following momentum indicator
@@ -29,7 +29,6 @@ MA is moving average
 
     def __init__(self):
         super(Strategy, self).__init__()
-        super(MA, self).__init__()
 
     @classmethod
     def macd(cls, df, startdate, enddate, dfcol, window1, window2):

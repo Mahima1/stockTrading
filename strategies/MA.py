@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-from .Strategy import Strategy
+from stock_trading.strategies.Strategy import Strategy
 
 
 class MA(Strategy):
@@ -47,7 +47,8 @@ n = number of time periods​
         temp['roll'] = temp.rolling(window, min_periods=window)[dfcol].mean()
         return temp
 
-    def plotit(self, temp):
+    @classmethod
+    def plotit(cls, temp):
         """
         Function for plotting bands in a time series graph.
         @param temp: Dataframe returned from moving_average func

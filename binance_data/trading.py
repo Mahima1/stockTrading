@@ -3,26 +3,35 @@ import time
 from datetime import timedelta
 
 import pandas as pd
-from strategies.MAOMA import MAOMA
 from timeloop import Timeloop
 
-
-# from stockTrading.strategies.Portfolio import Portfolio
+from stock_trading.strategies.MAOMA import MAOMA
+from stock_trading.strategies.Portfolio import Portfolio
 
 
 class Trading:
+    """
 
-    def get_new_db(self, df):
+    """
+
+    def __init__(self):
+        pass
+
+    @classmethod
+    def get_next_db(cls, df):
         """
 
         @param df:
         @return:
         """
-        Trading.get_new_db.counter += 1
-        i = Trading.get_new_db.counter + 1000
+        Trading.get_next_db.counter += 1
+        i = Trading.get_next_db.counter + 1000
         return df[:i]
 
-    def driver(self):
+    @classmethod
+    def driver(cls):
+        # def __init__(self):
+        #     print("paper_trading class")
         """
 
         @return:
@@ -34,7 +43,7 @@ class Trading:
         df['Close_time'] = pd.to_datetime(df['Close_time'])
         df.rename(columns={'Open_time': 'Date'}, inplace=True)
         df = df.drop(columns=['Quote_asset_volume', 'Buy_base_asset', 'Buy_quote_asset', 'Ignore'])
-        Trading.get_new_db.counter = 0
+        Trading.get_next_db.counter = 0
 
         # df=pd.read_pickle("./api/df_of_10k_samples_ETHBTC_2019-06-24 17:39:00_2019-07-01 16:09:00.pkl")
 
@@ -55,12 +64,8 @@ class Trading:
             @param endtime:
             @return:
             """
-            sliceddf = Trading.get_new_db(df)
+            sliceddf = Trading.get_next_db(df)
             lastdate = sliceddf['Date'].iloc[sliceddf.shape[0] - 1]
-            #     temp,lastSig=MAOMA.maomasig(sliceddf,starttime,endtime,'Close',30,60)
-            #     net,totalbuysig,totalsellsig=Portfolio.pfmanage(temp,'Close')
-            #     print ("portfolio value: {}   Buy sigs: {}   Sell sigs: {} ".format(net,totalbuysig,totalsellsig))
-            #     print("last date is : "+str(lastdate)+"  last signal is: "+str(lastSig))
             temp = MAOMA.maomasig(sliceddf, starttime, endtime, 'Close', 30, 60)
             net = Portfolio.pfmanage(temp, 'Close')
             print("portfolio value: ", net)
@@ -73,6 +78,3 @@ class Trading:
             except KeyboardInterrupt:
                 tl.stop()
                 break
-
-    # def __init__(self):
-    #     print("paper_trading class")

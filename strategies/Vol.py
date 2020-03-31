@@ -1,16 +1,15 @@
 import numpy as np
 
-from .MA import MA
-from .Portfolio import Portfolio
-from .Strategy import Strategy
+from stock_trading.strategies.MA import MA
+from stock_trading.strategies.Portfolio import Portfolio
+from stock_trading.strategies.Strategy import Strategy
 
 
-class Vol(Strategy, MA, Portfolio):
+class Vol(Strategy):
     Strategy.names.append('Vol')
 
     def __init__(self):
         super(Strategy, self).__init__()
-        super(MA, self).__init__()
 
     @classmethod
     def volsig(cls, df, startdate, enddate, window):

@@ -1,8 +1,8 @@
-from .MA import MA
-from .Strategy import Strategy
+from stock_trading.strategies.Strategy import Strategy
+from stock_trading.strategies.MA import MA
 
 
-class Klines(Strategy, MA):
+class Klines(Strategy):
     """
     Candlestick charts are a technical tool that packs data for multiple time frames into single price bars.
     This makes them more useful than traditional open-high, low-close bars or simple lines that connect the dots of closing prices.
@@ -14,7 +14,6 @@ class Klines(Strategy, MA):
 
     def __init__(self):
         super(Strategy, self).__init__()
-        super(MA, self).__init__()
 
     @classmethod
     def doji(cls, df, startdate, enddate, dfcol, window):

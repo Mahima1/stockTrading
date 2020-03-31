@@ -1,12 +1,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from .MA import MA
-from .Portfolio import Portfolio
-from .Strategy import Strategy
+from stock_trading.strategies.MA import MA
+from stock_trading.strategies.Portfolio import Portfolio
+from stock_trading.strategies.Strategy import Strategy
 
-
-class Boll(Strategy, MA):
+class Boll(Strategy):
     """
 Basic Info and Implementation:
 Bollinger Bands are a technical analysis tool.
@@ -37,7 +36,6 @@ m=Number of standard deviations (typically 2)
     # saved_args=0
     def __init__(self):
         super(Strategy, self).__init__()
-        super(MA, self).__init__()
 
     @classmethod
     def bollinger_bands(cls, df, startdate, enddate, window, factor=2):
@@ -55,11 +53,11 @@ m=Number of standard deviations (typically 2)
 
         # Boll.saved_args=locals()
         temp = df.copy()
-        temp['typical price'] = (temp['Close'] + temp['High'] + temp['Low']) / 3
-        temp = MA.moving_average(temp, startdate, enddate, 'typical price', window)
-        temp['std'] = temp.rolling(window, min_periods=window)['typical price'].std()
-        temp['upper band'] = temp['roll'] + (factor * temp['std'])
-        temp['lower band'] = temp['roll'] - (factor * temp['std'])
+        temp['typical_price'] = (temp['Close'] + temp['High'] + temp['Low']) / 3
+        temp = MA.moving_average(temp, startdate, enddate, 'typical_price', window)
+        temp['std'] = temp.rolling(window, min_periods=window)['typical_price'].std()
+        temp['upper_band'] = temp['roll'] + (factor * temp['std'])
+        temp['lower_band'] = temp['roll'] - (factor * temp['std'])
         return temp
 
     @classmethod
@@ -70,9 +68,9 @@ m=Number of standard deviations (typically 2)
         @return: void
         """
 
-        plt.plot(temp['Date'], temp['typical price'])
-        plt.plot(temp['Date'], temp['upper band'])
-        plt.plot(temp['Date'], temp['lower band'])
+        plt.plot(temp['Date'], temp['typical_price'])
+        plt.plot(temp['Date'], temp['upper_band'])
+        plt.plot(temp['Date'], temp['lower_band'])
 
     @classmethod
     def bolsig(cls, df, startdate, enddate, window, factor=2):
@@ -88,8 +86,8 @@ m=Number of standard deviations (typically 2)
         @return: Dataframe with 'SIGNAL' column added to it
         """
         t = Boll.bollinger_bands(df, startdate, enddate, window, factor)
-        mask1 = t['High'] >= t['upper band']
-        mask = t['Low'] <= t['lower band']
+        mask1 = t['High'] >= t['upper_band']
+        mask = t['Low'] <= t['lower_band']
         t['signal'] = np.where(mask, 'buy', (np.where(mask1, 'sell', 'None')))
         return t
 

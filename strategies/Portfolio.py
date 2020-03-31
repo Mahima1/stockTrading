@@ -1,6 +1,6 @@
 import numpy as np
 
-from .Main import Main
+from stock_trading.strategies.Main import Main
 
 
 class Portfolio(Main):
@@ -12,6 +12,9 @@ class Portfolio(Main):
             return 0
         t2 = df.copy()
         t2 = t2[t2['signal'] != 'None']
+        t2.reset_index(drop=True, inplace=True)
+        print("=============================printing t2 ==================================")
+        print(t2)
         if t2.shape[0] == 0:
             return 0
         # totalSellSig = str(t2[t2['signal'] == 'sell'].shape[0])
@@ -19,7 +22,13 @@ class Portfolio(Main):
         t2['sigbinary'] = np.where(t2['signal'] == 'buy', 1, -1)
         t2['shifted'] = t2['sigbinary'].shift(1)
         t2['multi'] = t2['sigbinary'] * t2['shifted']
+        print("=============================printing t2 multi ==================================")
+        print(t2['multi'])
         t2['multi'].iloc[0] = -1
+        print("=============================printing t2 multi iloc ==================================")
+        print(t2['multi'].iloc[0])
+        print("=============================printing t2 multi index ==================================")
+        print(t2['multi'].index)
         t = t2[t2['multi'] == -1]
         mask = t['sigbinary'] == 1
         t['exec'] = np.where(mask, 'buy', 'sell')

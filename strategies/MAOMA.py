@@ -3,12 +3,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from .MA import MA
-from .Portfolio import Portfolio
-from .Strategy import Strategy
+from stock_trading.strategies.MA import MA
+from stock_trading.strategies.Portfolio import Portfolio
+from stock_trading.strategies.Strategy import Strategy
 
 
-class MAOMA(Strategy, MA):
+class MAOMA(Strategy):
     """
     Basic Info and Implementation:
 Moving Average Of Moving Average (MACD) is a trend-following momentum indicator
@@ -32,7 +32,6 @@ MA is moving average
 
     def __init__(self):
         super(Strategy, self).__init__()
-        super(MA, self).__init__()
 
     @classmethod
     def maoma(cls, df, startdate, enddate, dfcol, window1, window2):

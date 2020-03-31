@@ -3,25 +3,27 @@ import datetime
 import pandas as pd
 import requests
 
+from stock_trading.strategies.Boll import Boll
+from stock_trading.strategies.Join import Join
+from stock_trading.strategies.MACD import MACD
+from stock_trading.strategies.MAOMA import MAOMA
+from stock_trading.strategies.Rsi import Rsi
+from stock_trading.strategies.Vol import Vol
 
-# import sys
-# sys.path.append('/home/r/stockTrading/')
-# from stockTrading.strategies.MACD import MACD
-# from stockTrading.strategies.Boll import Boll
-# from stockTrading.strategies.Join import join, optimizer
-# from stockTrading.strategies.Rsi import Rsi
-# from stockTrading.strategies.Vol import Vol
-# from stockTrading.strategies.MAOMA import MAOMA
 
 class Backtesting:
     """
 
     """
 
-    coinSymbols = ['XMRBTC', 'ETHBTC', 'NEOBTC', 'BTCUSDT', 'LTCBTC']
-    klineInterval = '1m'
+    coin_symbols = ['XMRBTC', 'ETHBTC', 'NEOBTC', 'BTCUSDT', 'LTCBTC']
+    kline_interval = '1m'
 
-    def convert_response_to_df_for_backtesting(self, api_response):
+    def __init__(self):
+        pass
+
+    @classmethod
+    def convert_response_to_df_for_backtesting(cls, api_response):
         """
 
         @param api_response:
@@ -39,45 +41,44 @@ class Backtesting:
         df.rename(columns={'Open_time': 'Date'}, inplace=True)
         return df
 
-    def make_df(self, coin_symbol, kline_interval):
-        """
-
-        @param coin_symbol:
-        @param kline_interval:
-        @return:
-        """
-        #     coin_symbol='LTCBTC'
-        #     kline_interval='1m'
+    @classmethod
+    def make_df_for_backtesting(cls, coin_symbol, kline_interval):
         limit = 1000
         params = {'symbol': coin_symbol, 'interval': kline_interval, 'limit': limit}
         api_response = requests.get('https://api.binance.com/api/v1/klines', params)
 
         df = Backtesting.convert_response_to_df_for_backtesting(api_response)
-        #     td is timeDifference, it is being used to calculate first date and last date from given dataframe so you dont have to provide it exclusively
         td = df['Date'].iloc[999] - df['Date'].iloc[0]
-        starttime = int(datetime.datetime.timestamp(df['Date'].iloc[0] - 10 * td)) * 1000
-        endtime = int(datetime.datetime.timestamp(df['Date'].iloc[0] - 9 * td)) * 1000
+        starttime = int(datetime.datetime.timestamp(df['Date'].iloc[0] - 10 * (td))) * 1000
+        endtime = int(datetime.datetime.timestamp(df['Date'].iloc[0] - 9 * (td))) * 1000
         params = {'symbol': coin_symbol, 'startTime': starttime, 'endTime': endtime, 'interval': kline_interval,
                   'limit': limit}
         api_response = requests.get('https://api.binance.com/api/v1/klines', params)
         maindf = pd.DataFrame.from_records(api_response.json())
+
         maindf.columns = ["Open_time", "Open", "High", "Low", "Close", "Volume", "Close_time", "Quote_asset_volume",
                           "Number_of_trades", "Buy_base_asset", "Buy_quote_asset", "Ignore"]
+        maindf.rename(columns={'Open_time': 'Date'}, inplace=True)
+        cols = maindf.columns[maindf.dtypes.eq('object')]
+        maindf[cols] = maindf[cols].apply(pd.to_numeric)
 
         for i in range(9, 0, -1):
-            starttime = int(datetime.datetime.timestamp(df['Date'].iloc[0] - i * td)) * 1000
-            endtime = int(datetime.datetime.timestamp(df['Date'].iloc[0] - (i - 1) * td)) * 1000
+            starttime = int(datetime.datetime.timestamp(df['Date'].iloc[0] - i * (td))) * 1000
+            endtime = int(datetime.datetime.timestamp(df['Date'].iloc[0] - (i - 1) * (td))) * 1000
             params = {'symbol': coin_symbol, 'startTime': starttime, 'endTime': endtime, 'interval': kline_interval,
                       'limit': limit}
             api_response = requests.get('https://api.binance.com/api/v1/klines', params)
             temp = pd.DataFrame.from_records(api_response.json())
             temp.columns = ["Open_time", "Open", "High", "Low", "Close", "Volume", "Close_time", "Quote_asset_volume",
                             "Number_of_trades", "Buy_base_asset", "Buy_quote_asset", "Ignore"]
+            temp.rename(columns={'Open_time': 'Date'}, inplace=True)
+            cols = temp.columns[temp.dtypes.eq('object')]
+            temp[cols] = temp[cols].apply(pd.to_numeric)
             maindf = maindf.append(temp, ignore_index=True)
-            maindf.rename(columns={'Open_time': 'Date'}, inplace=True)
         return maindf
 
-    def back_test(self, coin_symbol, kline_interval):
+    @classmethod
+    def back_test(cls, coin_symbol, kline_interval):
         """
 
         @param coin_symbol:
@@ -85,7 +86,7 @@ class Backtesting:
         @return:
         """
 
-        df = Backtesting.make_df(coin_symbol, kline_interval)
+        df = Backtesting.make_df_for_backtesting(coin_symbol, kline_interval)
         starttime = df['Date'].iloc[0]
         lastindex = df.shape[1]
         endtime = df['Date'].iloc[lastindex]
@@ -104,7 +105,9 @@ class Backtesting:
             Vol.voloptimize(df, starttime, endtime, arr5)
         ]
 
-        return optimizer(llist)
+        return Join.optimizer(llist)
 
-    for i in range(len(coinSymbols)):
-        back_test(coinSymbols[i], klineInterval)
+    @classmethod
+    def driver(cls):
+        for i in range(len(Backtesting.coin_symbols)):
+            Backtesting.back_test(Backtesting.coin_symbols[i], Backtesting.kline_interval)

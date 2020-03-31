@@ -1,8 +1,8 @@
 import numpy as np
 
-from .Dr import Dr
-from .Portfolio import Portfolio
-from .Strategy import Strategy
+from stock_trading.strategies.Dr import Dr
+from stock_trading.strategies.Portfolio import Portfolio
+from stock_trading.strategies.Strategy import Strategy
 
 
 class Rsi(Strategy):
@@ -39,7 +39,7 @@ class Rsi(Strategy):
 
         """
         temp = Strategy.slicebydate(df, startdate, enddate)
-        temp2 = Dr.daily_return(dfcol)
+        temp2 = Dr.daily_return(temp, dfcol)
         mask = temp2[dfcol + '_dr'] < 0
         mask1 = temp2[dfcol + '_dr'] >= 0
         temp['loss'] = np.where(mask, abs(temp2[dfcol + '_dr']), 0)

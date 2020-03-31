@@ -1,4 +1,4 @@
-from .Strategy import Strategy
+from stock_trading.strategies.Strategy import Strategy
 
 
 class Dr(Strategy):
