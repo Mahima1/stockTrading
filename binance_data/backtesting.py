@@ -1,5 +1,4 @@
 import datetime
-
 import pandas as pd
 import requests
 
@@ -29,6 +28,7 @@ class Backtesting:
         @param api_response:
         @return:
         """
+        print("Converting response from api to dataframe")
         df = pd.DataFrame.from_records(api_response.json())
         df.columns = ["Open_time", "Open", "High", "Low", "Close", "Volume", "Close_time", "Quote_asset_volume",
                       "Number_of_trades", "Buy_base_asset", "Buy_quote_asset", "Ignore"]
@@ -42,16 +42,17 @@ class Backtesting:
         return df
 
     @classmethod
-    def make_df_for_backtesting(cls, coin_symbol, kline_interval):
+    def make_timedelta(cls, coin_symbol, kline_interval):
+
         limit = 1000
         params = {'symbol': coin_symbol, 'interval': kline_interval, 'limit': limit}
         api_response = requests.get('https://api.binance.com/api/v1/klines', params)
 
         df = Backtesting.convert_response_to_df_for_backtesting(api_response)
         td = df['Date'].iloc[999] - df['Date'].iloc[0]
-        starttime = int(datetime.datetime.timestamp(df['Date'].iloc[0] - 10 * (td))) * 1000
-        endtime = int(datetime.datetime.timestamp(df['Date'].iloc[0] - 9 * (td))) * 1000
-        params = {'symbol': coin_symbol, 'startTime': starttime, 'endTime': endtime, 'interval': kline_interval,
+        start_time = int(datetime.datetime.timestamp(df['Date'].iloc[0] - 10 * (td))) * 1000
+        end_time = int(datetime.datetime.timestamp(df['Date'].iloc[0] - 9 * (td))) * 1000
+        params = {'symbol': coin_symbol, 'startTime': start_time, 'endTime': end_time, 'interval': kline_interval,
                   'limit': limit}
         api_response = requests.get('https://api.binance.com/api/v1/klines', params)
         maindf = pd.DataFrame.from_records(api_response.json())
@@ -61,11 +62,18 @@ class Backtesting:
         maindf.rename(columns={'Open_time': 'Date'}, inplace=True)
         cols = maindf.columns[maindf.dtypes.eq('object')]
         maindf[cols] = maindf[cols].apply(pd.to_numeric)
+        return maindf, df, td
+
+    @classmethod
+    def make_df_for_backtesting(cls, coin_symbol, kline_interval):
+        print("Making dataframe bigger")
+        limit = 1000
+        maindf, df, td = Backtesting.make_timedelta(coin_symbol, kline_interval)
 
         for i in range(9, 0, -1):
-            starttime = int(datetime.datetime.timestamp(df['Date'].iloc[0] - i * (td))) * 1000
-            endtime = int(datetime.datetime.timestamp(df['Date'].iloc[0] - (i - 1) * (td))) * 1000
-            params = {'symbol': coin_symbol, 'startTime': starttime, 'endTime': endtime, 'interval': kline_interval,
+            start_time = int(datetime.datetime.timestamp(df['Date'].iloc[0] - i * (td))) * 1000
+            end_time = int(datetime.datetime.timestamp(df['Date'].iloc[0] - (i - 1) * (td))) * 1000
+            params = {'symbol': coin_symbol, 'startTime': start_time, 'endTime': end_time, 'interval': kline_interval,
                       'limit': limit}
             api_response = requests.get('https://api.binance.com/api/v1/klines', params)
             temp = pd.DataFrame.from_records(api_response.json())
@@ -78,7 +86,7 @@ class Backtesting:
         return maindf
 
     @classmethod
-    def back_test(cls, coin_symbol, kline_interval):
+    def driver(cls, coin_symbol, kline_interval):
         """
 
         @param coin_symbol:
@@ -86,10 +94,12 @@ class Backtesting:
         @return:
         """
 
+        print("Running tests...")
+
         df = Backtesting.make_df_for_backtesting(coin_symbol, kline_interval)
-        starttime = df['Date'].iloc[0]
-        lastindex = df.shape[1]
-        endtime = df['Date'].iloc[lastindex]
+        start_time = df['Date'].iloc[0]
+        last_index = df.shape[1]
+        end_time = df['Date'].iloc[last_index]
 
         arr1 = [[5, 30], [40, 100]]
         arr2 = [[10, 20], [2, 4]]
@@ -97,17 +107,19 @@ class Backtesting:
         arr4 = [[60, 95], [5, 40], [5, 30]]
         arr5 = [[10, 40]]
 
-        llist = [
-            MACD.macdoptimize(df, starttime, endtime, 'Close', arr1),
-            Boll.boloptimize(df, starttime, endtime, arr2),
-            MAOMA.maomaoptimize(df, starttime, endtime, 'Close', arr3),
-            Rsi.rsioptimize(df, starttime, endtime, 'Close', arr4),
-            Vol.voloptimize(df, starttime, endtime, arr5)
+        optimize_func_list = [
+            MACD.macdoptimize(df, start_time, end_time, 'Close', arr1),
+            Boll.boloptimize(df, start_time, end_time, arr2),
+            MAOMA.maomaoptimize(df, start_time, end_time, 'Close', arr3),
+            Rsi.rsioptimize(df, start_time, end_time, 'Close', arr4),
+            Vol.voloptimize(df, start_time, end_time, arr5)
         ]
 
-        return Join.optimizer(llist)
+        return Join.optimizer(optimize_func_list)
 
     @classmethod
-    def driver(cls):
-        for i in range(len(Backtesting.coin_symbols)):
-            Backtesting.back_test(Backtesting.coin_symbols[i], Backtesting.kline_interval)
+    def back_test(cls):
+        print("Backtesting func started...")
+        # for i in range(len(Backtesting.coin_symbols)):
+        #     print(Backtesting.driver(Backtesting.coin_symbols[i], Backtesting.kline_interval))
+        print(Backtesting.driver(Backtesting.coin_symbols[0], Backtesting.kline_interval))

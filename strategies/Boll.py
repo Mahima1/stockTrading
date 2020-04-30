@@ -38,14 +38,14 @@ m=Number of standard deviations (typically 2)
         super(Strategy, self).__init__()
 
     @classmethod
-    def bollinger_bands(cls, df, startdate, enddate, window, factor=2):
+    def bollinger_bands(cls, df, start_date, end_date, window, factor=2):
         """
         Calculates moving_average of TP ( typical price ) and its std deviation then upper band (+factor*std deviation)
         and lower band  (-factor*std deviation) wrt moving_average line.
 
         @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
-        @param startdate: Date ('YYYY-MM-DD')
-        @param enddate: Date ('YYYY-MM-DD')
+        @param start_date: Date ('YYYY-MM-DD')
+        @param end_date: Date ('YYYY-MM-DD')
         @param window: int
         @param factor: int or float (default is set to 2)
         @return: Dataframe with TYPICAL PRICE, STD (standard deviation), UPPER BAND, LOWER BAND columns added into it
@@ -54,7 +54,7 @@ m=Number of standard deviations (typically 2)
         # Boll.saved_args=locals()
         temp = df.copy()
         temp['typical_price'] = (temp['Close'] + temp['High'] + temp['Low']) / 3
-        temp = MA.moving_average(temp, startdate, enddate, 'typical_price', window)
+        temp = MA.moving_average(temp, start_date, end_date, 'typical_price', window)
         temp['std'] = temp.rolling(window, min_periods=window)['typical_price'].std()
         temp['upper_band'] = temp['roll'] + (factor * temp['std'])
         temp['lower_band'] = temp['roll'] - (factor * temp['std'])
@@ -73,34 +73,34 @@ m=Number of standard deviations (typically 2)
         plt.plot(temp['Date'], temp['lower_band'])
 
     @classmethod
-    def bolsig(cls, df, startdate, enddate, window, factor=2):
+    def bolsig(cls, df, start_date, end_date, window, factor=2):
         """
         Uses dataframe returned from bollingerbands func to get upper rand lower bands then we compare 'High' and 'Low'
         with those bands and generate signal of sell as high surpasses upper and low declines below lower.
 
         @param df: Dataframe object with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
-        @param startdate: Date ('YYYY-MM-DD')
-        @param enddate: Date ('YYYY-MM-DD')
+        @param start_date: Date ('YYYY-MM-DD')
+        @param end_date: Date ('YYYY-MM-DD')
         @param window: int
         @param factor: int or float (default = 2)
         @return: Dataframe with 'SIGNAL' column added to it
         """
-        t = Boll.bollinger_bands(df, startdate, enddate, window, factor)
+        t = Boll.bollinger_bands(df, start_date, end_date, window, factor)
         mask1 = t['High'] >= t['upper_band']
         mask = t['Low'] <= t['lower_band']
         t['signal'] = np.where(mask, 'buy', (np.where(mask1, 'sell', 'None')))
         return t
 
     @classmethod
-    def boloptimize(cls, df, startdate, enddate, arr):
+    def boloptimize(cls, df, start_date, end_date, arr):
         """
         This function finds best performing window (n) and factor(m) by calculating profits while iterating over values of
         n and m in the range we have provided. It uses 'Bolsig' function which in turn uses 'bollinger_bands' function
         to generate signals and calculate profits for every value of n and m.
 
         @param df: Dataframe object with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
-        @param startdate: Date ('YYYY-MM-DD')
-        @param enddate: Date ('YYYY-MM-DD')
+        @param start_date: Date ('YYYY-MM-DD')
+        @param end_date: Date ('YYYY-MM-DD')
         @param arr: arr is list of lists of the form [[startrange,endrange], [startrange,endrange]] where lists inside are in order
         of window and factor , we could use this type of list too [step,+-range] but here for simplicity we assumed step
         is always integer 1 and hence we are not changing values by 0.1 or any other float number.
@@ -118,7 +118,7 @@ m=Number of standard deviations (typically 2)
         for p in range(count1):
             f = arr[1][0]
             for e in range(count2):
-                t = Boll.bolsig(df, startdate, enddate, w, f)
+                t = Boll.bolsig(df, start_date, end_date, w, f)
                 net = Portfolio.pfmanage(t, 'Close')
                 if maxprofit < net:
                     maxprofit = net

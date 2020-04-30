@@ -18,21 +18,22 @@ class Join:
         pass
 
     @classmethod
-    def optimizer(cls, strategies_list):
+    def optimizer(cls, optmize_func_list):
         """
         This func takes
-        @param strategies_list: list of optimizer functions for the strategies
-        @return:
+        @param optmize_func_list: list of optimizer functions for the strategies
+        @return: var,  is list of the lists returned by various optimization functions
         """
-        count = len(strategies_list)
+        print("Running optimizer... ")
+        count = len(optmize_func_list)
         profit = 0
         at_index = 0
         var = list()
         for i in range(count):
-            p = strategies_list[i]
+            p = optmize_func_list[i]
             p.append(i)
             var.append(p)
-            # var.append(strategies_list[i])         # var is list of lists returned by various optimize functions
+            # var.append(optmize_func_list[i])
             if profit < var[i][0]:
                 profit = var[i][0]
             #     at_index = i

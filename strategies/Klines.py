@@ -16,7 +16,7 @@ class Klines(Strategy):
         super(Strategy, self).__init__()
 
     @classmethod
-    def doji(cls, df, startdate, enddate, dfcol, window):
+    def doji(cls, df, start_date, end_date, dfcol, window):
         """
         Basic Info and Implementation:
         A doji is a name for a session in which the candlestick for a security has an open and close that are virtually equal and
@@ -36,13 +36,13 @@ class Klines(Strategy):
         So it is more risky.
 
         @param df: Dataframe object with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
-        @param startdate: Date, format ('YYYY-MM-DD')
-        @param enddate: Date, format ('YYYY-MM-DD')
+        @param start_date: Date, format ('YYYY-MM-DD')
+        @param end_date: Date, format ('YYYY-MM-DD')
         @param dfcol: String, Name of dataframe column on which to apply this analytics like 'Close' or 'Open'
         @param window: int, Number of days in smoothing period
         @return: Dataframe with only those samples which make this pattern
         """
-        q1 = MA.moving_average(df, startdate, enddate, dfcol, window)
+        q1 = MA.moving_average(df, start_date, end_date, dfcol, window)
         q3 = q1.copy()
         q1['shiftedroll'] = q1['roll'].shift(5)
         q3['slope'] = (q1['roll'] - q1['shiftedroll']) / 5
@@ -55,7 +55,7 @@ class Klines(Strategy):
     #     print(q3)# if -ve denotes downward trend
 
     @classmethod
-    def umbrella(cls, df, startdate, enddate, dfcol, window):
+    def umbrella(cls, df, start_date, end_date, dfcol, window):
         """
         Basic Info and Implementation:
         Candlestick Umbrella pattern is a kind of a doji with no upper shadow but a long lower shadow.
@@ -65,14 +65,14 @@ class Klines(Strategy):
         Umbrella is meaningful if it comes with a trend hence to generate signals with it, first slope of samples is calculated and if it is >0.6 then we checked if umbrella if formed or not by looking at ratios and determining two things -  one being that  candlestick body of sample is smaller as compared to high/low line segment and other being line segment above body is smaller than the one below the body.
 
         @param df: Dataframe object with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
-        @param startdate: Date ('YYYY-MM-DD')
-        @param enddate: Date ('YYYY-MM-DD')
+        @param start_date: Date ('YYYY-MM-DD')
+        @param end_date: Date ('YYYY-MM-DD')
         @param dfcol: String, Name of dataframe column on which to apply this analytics like 'Close' or 'Open'
         @param window: int, number of days to use in analysis
         @return: dataframe object filtered with only those samples which create a meaningful umbrella
 
         """
-        q1 = MA.moving_average(df, startdate, enddate, dfcol, window)
+        q1 = MA.moving_average(df, start_date, end_date, dfcol, window)
         q3 = q1.copy()
         q1['shiftedroll'] = q1['roll'].shift(5)
         q3['slope'] = (q1['roll'] - q1['shiftedroll']) / 5
@@ -82,33 +82,33 @@ class Klines(Strategy):
         return q3
 
     @classmethod
-    def maribozu(cls, df, startdate, enddate):
+    def maribozu(cls, df, start_date, end_date):
         """
         The marubozu is simply a long black candle, with little to no upper or lower shadows.
         The pattern shows that sellers controlled the trading day from open to close, and is therefore a bearish pattern .
         This func calculates the ratio of difference of 'open','close' and difference of 'high','low' and filters out those with ratio >0.95 hence we get samples with big body.
 
         @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
-        @param startdate: Date ('YYYY-MM-DD')
-        @param enddate: Date ('YYYY-MM-DD')
+        @param start_date: Date ('YYYY-MM-DD')
+        @param end_date: Date ('YYYY-MM-DD')
         @return: Dataframe with only maribozu making samples
         """
 
-        temp = Strategy.slicebydate(df, startdate, enddate)
+        temp = Strategy.slicebydate(df, start_date, end_date)
         temp2 = temp[abs((temp['Open'] - temp['Close']) / (temp['High'] - temp['Low'])) >= 0.95]
         return temp2
 
     @classmethod
-    def plotit(cls, t, startdate, enddate):
+    def plotit(cls, t, start_date, end_date):
         """
         Function for plotting bands in a time series graph.
 
         @param t: Dataframe returned from candlesticks function of the Strategy module
-        @param startdate: Date ('YYYY-MM-DD')
-        @param enddate: Date ('YYYY-MM-DD')
+        @param start_date: Date ('YYYY-MM-DD')
+        @param end_date: Date ('YYYY-MM-DD')
         @return: void
         """
-        Strategy.candlesticks(t, startdate, enddate)
+        Strategy.candlesticks(t, start_date, end_date)
 #
 # Klines.doji(spy,'2007-08-08','2008-10-10')
 # Klines.umbrella(spy,'2007-08-08','2008-10-10')

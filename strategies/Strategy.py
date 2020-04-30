@@ -1,4 +1,4 @@
-#     startdate=pd.to_datetime(14,origin=startdate,unit='D')
+#     start_date=pd.to_datetime(14,origin=start_date,unit='D')
 # def profit(df, dfcol):
 #     df['sigvol'] = np.where((df['signal'] != 'None'), 10, 0)  # Z.money/df[dfcol]
 #     df['bought'] = np.where(df['signal'] == 'buy', df['sigvol'] * df[dfcol], 0)
@@ -16,13 +16,13 @@ class Strategy:
     datecol = 'Date'
 
     @classmethod
-    def slicebydate(cls, df, startdate, enddate):
-        temp = df[df[Strategy.datecol] >= startdate][df[Strategy.datecol] <= enddate]
+    def slicebydate(cls, df, start_date, end_date):
+        temp = df[df[Strategy.datecol] >= start_date][df[Strategy.datecol] <= end_date]
         return temp
 
     @classmethod
-    def candlesticks(cls, df, startdate, enddate):
-        quotes = Strategy.slicebydate(df, startdate, enddate)
+    def candlesticks(cls, df, start_date, end_date):
+        quotes = Strategy.slicebydate(df, start_date, end_date)
         fig, ax = plt.subplots()
         #     candle.candlestick2_ohlc(ax,quotes['Open'],quotes['High'],quotes['Low'],quotes['Close'],width=0.6,colorup='#53AA03',colordown="#C20074")
         candle.candlestick2_ohlc(ax, quotes['Open'], quotes['High'], quotes['Low'], quotes['Close'], width=0.6,

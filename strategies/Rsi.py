@@ -25,20 +25,20 @@ class Rsi(Strategy):
         super(Strategy, self).__init__()
 
     @classmethod
-    def rsi(cls, df, startdate, enddate, dfcol, window):
+    def rsi(cls, df, start_date, end_date, dfcol, window):
         """
         This func first calculates daily return of column as parameter for dfcol then it takes avg gain and avg loss by first filtering positive daily retuns and negative in different dataframes then calculates moving averages for both. The ratio of  averages is our x in the formulae then the dataframe with 'rsi' column is returned with the results stored.
 
 
         @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
-        @param startdate: Date ('YYYY-MM-DD')
-        @param enddate: Date ('YYYY-MM-DD')
+        @param start_date: Date ('YYYY-MM-DD')
+        @param end_date: Date ('YYYY-MM-DD')
         @param dfcol: String, column of DataFrame whose moving average is to be calculated
         @param window: int
         @return: Dataframe with TYPICAL PRICE, STD (standard deviation), UPPER BAND, LOWER BAND columns added into it
 
         """
-        temp = Strategy.slicebydate(df, startdate, enddate)
+        temp = Strategy.slicebydate(df, start_date, end_date)
         temp2 = Dr.daily_return(temp, dfcol)
         mask = temp2[dfcol + '_dr'] < 0
         mask1 = temp2[dfcol + '_dr'] >= 0
@@ -62,14 +62,14 @@ class Rsi(Strategy):
         temp.plot(x='Date', y='rsi')
 
     @classmethod
-    def rsisig(cls, df, startdate, enddate, upperlimit, lowerlimit, dfcol, window):
+    def rsisig(cls, df, start_date, end_date, upperlimit, lowerlimit, dfcol, window):
         """
         Uses dataframe returned from rsi func to get upper rand lower bands then we compare 'rsi' values
         with those bands and generate signal of sell as rsi values surpasses upper and buy  if declines below lower.
 
         @param df: Dataframe object with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
-        @param startdate: Date ('YYYY-MM-DD')
-        @param enddate: Date ('YYYY-MM-DD')
+        @param start_date: Date ('YYYY-MM-DD')
+        @param end_date: Date ('YYYY-MM-DD')
         @param upperlimit: int , upper limit after which security can be called overbrought (typically 70)
         @param lowerlimit: lower limit after which security can be called oversold (typically 30)
         @param dfcol: String, column of DataFrame whose moving average is to be calculated
@@ -77,21 +77,21 @@ class Rsi(Strategy):
         @return: Dataframe with 'SIGNAL' column added to it
 
         """
-        t = Rsi.rsi(df, startdate, enddate, dfcol, window)
+        t = Rsi.rsi(df, start_date, end_date, dfcol, window)
         mask = t['rsi'] <= lowerlimit
         mask1 = t['rsi'] >= upperlimit
         t['signal'] = np.where(mask, 'buy', (np.where(mask1, 'sell', 'None')))
         return t
 
     @classmethod
-    def rsioptimize(cls, df, startdate, enddate, dfcol, arr):
+    def rsioptimize(cls, df, start_date, end_date, dfcol, arr):
         """
     This function finds best performing window (n) and upper limit (u) and lower limit (l) by calculating profits while iterating over values of n ,u and l in the range we have provided. It uses 'rsisig' function which in turn uses 'Rsi' function
         to generate signals and calculate profits for every value of n , u, l.
 
         @param df: Dataframe object with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
-        @param startdate: Date ('YYYY-MM-DD')
-        @param enddate: Date ('YYYY-MM-DD')
+        @param start_date: Date ('YYYY-MM-DD')
+        @param end_date: Date ('YYYY-MM-DD')
         @param dfcol: String, column of DataFrame whose moving average is to be calculated
         @param arr: arr is list of lists of the form [[startrange,endrange], [startrange,endrange]] where lists inside are in order
         of window and factor , we could use this type of list too [step,+-range] but here for simplicity we assumed step
@@ -110,7 +110,7 @@ class Rsi(Strategy):
             for e in range(count2):
                 w = arr[2][0]
                 for r in range(count3):
-                    t = Rsi.rsisig(df, startdate, enddate, up, low, dfcol, w)
+                    t = Rsi.rsisig(df, start_date, end_date, up, low, dfcol, w)
                     net = Portfolio.pfmanage(t, 'Close')
                     if maxprofit < net:
                         maxprofit = net

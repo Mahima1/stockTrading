@@ -34,22 +34,22 @@ MA is moving average
         super(Strategy, self).__init__()
 
     @classmethod
-    def maoma(cls, df, startdate, enddate, dfcol, window1, window2):
+    def maoma(cls, df, start_date, end_date, dfcol, window1, window2):
         """
         MAOMA func creates two dataFrames with 'Roll' column added to them using moving_average func.
         t2 DataFrame has the moving_average of t1.
 
         @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
-        @param startdate: Date ('YYYY-MM-DD')
-        @param enddate: Date ('YYYY-MM-DD')
+        @param start_date: Date ('YYYY-MM-DD')
+        @param end_date: Date ('YYYY-MM-DD')
         @param dfcol: String, column of DataFrame whose moving average is to be calculated
         @param window1: int , bigger window (default 26)
         @param window2: int, smaller window (default 12)
         @return: t1, t2 both Dateframes with added column of 'ROLL' to them
 
         """
-        t1 = MA.moving_average(df, startdate, enddate, dfcol, window1)
-        t2 = MA.moving_average(t1, startdate, enddate, 'roll', window2)
+        t1 = MA.moving_average(df, start_date, end_date, dfcol, window1)
+        t2 = MA.moving_average(t1, start_date, end_date, 'roll', window2)
         return t1, t2
 
     @classmethod
@@ -64,20 +64,20 @@ MA is moving average
         plt.plot(t2['Date'], t2['roll'])
 
     @classmethod
-    def maomasig(cls, df, startdate, enddate, dfcol, window1, window2):
+    def maomasig(cls, df, start_date, end_date, dfcol, window1, window2):
         """
         Uses dataframe returned from macd func to get two moving averages then takes the difference of two.
         Diff will be positive or negative so we find where diff is changing signs and that will be our buy or sell signal.
 
         @param df: Dataframe object with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
-        @param startdate: Date ('YYYY-MM-DD')
-        @param enddate: Date ('YYYY-MM-DD')
+        @param start_date: Date ('YYYY-MM-DD')
+        @param end_date: Date ('YYYY-MM-DD')
         @param dfcol: String, column of DataFrame whose moving average is to be calculated
         @param window1: int , bigger window (default 26)
         @param window2: int, smaller window (default 12)
         @return: Dataframe with 'SIGNAL' column added to it
         """
-        q1, q2 = MAOMA.maoma(df, startdate, enddate, dfcol, window1, window2)
+        q1, q2 = MAOMA.maoma(df, start_date, end_date, dfcol, window1, window2)
         q1['diff'] = q1['roll'] - q2['roll']
         q1['shift'] = (q1['diff'].shift(1))
         q1['multiple'] = q1['diff'] * q1['shift']
@@ -90,15 +90,15 @@ MA is moving average
         return q1
 
     @classmethod
-    def maomaoptimize(cls, df, startdate, enddate, dfcol, arr):
+    def maomaoptimize(cls, df, start_date, end_date, dfcol, arr):
         """
         This function finds best performing window (n) and factor(m) by calculating profits while iterating over values of
         n and m in the range we have provided. It uses 'macdsig' function which in turn uses 'macd' function
         to generate signals and calculate profits for every value of n and m.
 
         @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
-        @param startdate: Date ('YYYY-MM-DD')
-        @param enddate: Date ('YYYY-MM-DD')
+        @param start_date: Date ('YYYY-MM-DD')
+        @param end_date: Date ('YYYY-MM-DD')
         @param dfcol: String, any price colunm on which to apply maoma strategy on
         @param arr: arr is list of lists of the form [[startrange,endrange], [startrange,endrange]] where lists inside are in order
         of windowShort and windowLong , we could use this type of list too [step,+-range] but here for simplicity we assumed step
@@ -114,7 +114,7 @@ MA is moving average
         for p in range(count1):
             w2 = arr[1][0]
             for e in range(count2):
-                t = MAOMA.maomasig(df, startdate, enddate, dfcol, w1, w2)
+                t = MAOMA.maomasig(df, start_date, end_date, dfcol, w1, w2)
                 net = Portfolio.pfmanage(t, 'Close')
                 if maxprofit < net:
                     maxprofit = net

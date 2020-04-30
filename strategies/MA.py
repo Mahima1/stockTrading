@@ -33,17 +33,17 @@ n = number of time periods​
         super(Strategy, self).__init__()
 
     @classmethod
-    def moving_average(cls, df, startdate, enddate, dfcol, window):
+    def moving_average(cls, df, start_date, end_date, dfcol, window):
         """
         @param df: Dataframe with at least these 5 columns in it namely - [High, Open, Low, Close, Date]
-        @param startdate: Date ('YYYY-MM-DD')
-        @param enddate: Date ('YYYY-MM-DD')
+        @param start_date: Date ('YYYY-MM-DD')
+        @param end_date: Date ('YYYY-MM-DD')
         @param dfcol: String, column of DataFrame whose moving average is to be calculated
         @param window: int
         @return: Dataframe with 'ROLL' column added into it which is the moving_average column
 
         """
-        temp = Strategy.slicebydate(df, startdate, enddate)
+        temp = Strategy.slicebydate(df, start_date, end_date)
         temp['roll'] = temp.rolling(window, min_periods=window)[dfcol].mean()
         return temp
 
@@ -57,20 +57,20 @@ n = number of time periods​
         plt.plot(temp['Date'], temp['roll'])
 
 # -----------moving average function which was predicting next dates and applying rolling mean there too----------
-# def moving_average(df,startdate,enddate,dfcol,window,days,minperiod=14):
+# def moving_average(df,start_date,end_date,dfcol,window,days,minperiod=14):
 #         import datetime
-#         temp=Strategy.slicebydate(df,startdate,enddate)
+#         temp=Strategy.slicebydate(df,start_date,end_date)
 #         # pd.date_range('2019-06-15 22:41:59.999000',periods=30,freq='60s')
-#         # enddate,periods=days,freq='m'
+#         # end_date,periods=days,freq='m'
 #         temp2=pd.DataFrame()
-#         temp2['Date']=pd.date_range(start=pd.to_datetime(1,origin=enddate,unit='D'),end=pd.to_datetime(days,origin=enddate,unit='D'))
+#         temp2['Date']=pd.date_range(start=pd.to_datetime(1,origin=end_date,unit='D'),end=pd.to_datetime(days,origin=end_date,unit='D'))
 #         temp=temp.append(temp2,ignore_index=True)
 #         temp['roll']=temp.rolling(window, min_periods = minperiod)[dfcol].mean()
 #         return temp
 
 
 # -----------moving average function with minperiod default set and can be explicitely changed-------------------------
-# def moving_average(df,startdate,enddate,dfcol,window,minperiod=14):
-#         temp=Strategy.slicebydate(df,startdate,enddate)
+# def moving_average(df,start_date,end_date,dfcol,window,minperiod=14):
+#         temp=Strategy.slicebydate(df,start_date,end_date)
 #         temp['roll']=temp.rolling(window, min_periods = minperiod)[dfcol].mean()
 #         return temp
