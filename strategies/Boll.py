@@ -119,7 +119,7 @@ m=Number of standard deviations (typically 2)
             f = arr[1][0]
             for e in range(count2):
                 t = Boll.bolsig(df, start_date, end_date, w, f)
-                net = Portfolio.pfmanage(t, 'Close')
+                net = Portfolio.pf_manage(t, 'Close')
                 if maxprofit < net:
                     maxprofit = net
                     factor = f

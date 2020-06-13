@@ -52,7 +52,7 @@ class Join:
             result = joined.dropna()
             temp = result.copy()
             temp.rename(columns={'signal' + first_key: 'signal'}, inplace=True)
-            t = Portfolio.pfmanage(temp, 'Close')
+            t = Portfolio.pf_manage(temp, 'Close')
             return t
 
         else:
@@ -67,5 +67,5 @@ class Join:
             result = result.loc[:, ~result.columns.duplicated()]
             result = result.drop(columns=['signal'])
             result.rename(columns={'signal' + first_key: 'signal'}, inplace=True)
-            t = Portfolio.pfmanage(result, 'Close')
+            t = Portfolio.pf_manage(result, 'Close')
             return t

@@ -111,7 +111,7 @@ class Rsi(Strategy):
                 w = arr[2][0]
                 for r in range(count3):
                     t = Rsi.rsisig(df, start_date, end_date, up, low, dfcol, w)
-                    net = Portfolio.pfmanage(t, 'Close')
+                    net = Portfolio.pf_manage(t, 'Close')
                     if maxprofit < net:
                         maxprofit = net
                         upperlimit = up

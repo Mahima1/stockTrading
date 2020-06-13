@@ -10,5 +10,6 @@ class Dr(Strategy):
 
     @classmethod
     def daily_return(cls, df, dfcol):
-        df[dfcol + '_dr'] = ((df[dfcol].shift(1) - df[dfcol]) / df[dfcol]) * 100
+        # df[dfcol + '_dr'] = ((df[dfcol].shift(1) - df[dfcol]) / df[dfcol]) * 100
+        df[dfcol + '_dr'] = ((df[dfcol] - df[dfcol].shift(1)) / df[dfcol].shift(1)) * 100
         return df

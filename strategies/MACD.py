@@ -111,7 +111,7 @@ MA is moving average
             w2 = arr[1][0]
             for e in range(count2):
                 t = MACD.macdsig(df, start_date, end_date, dfcol, w1, w2)
-                net = Portfolio.pfmanage(t, 'Close')
+                net = Portfolio.pf_manage(t, 'Close')
                 if maxprofit < net:
                     maxprofit = net
                     windowshort = w1

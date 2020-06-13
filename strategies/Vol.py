@@ -28,7 +28,7 @@ class Vol(Strategy):
         w = arr[0][0]
         for p in range(count1):
             t = Vol.volsig(df, start_date, end_date, w)
-            net = Portfolio.pfmanage(t, 'Close')
+            net = Portfolio.pf_manage(t, 'Close')
             if maxprofit < net:
                 maxprofit = net
                 window = w
